@@ -1,7 +1,18 @@
 {
   "hosting": {
     "site": "michaelleojacob-photo-tagging-app",
-    "public": "build"
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   },
   "database": {
     "rules": "database.rules.json"
