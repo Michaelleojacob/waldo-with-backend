@@ -12,7 +12,7 @@ const firebaseConfig = {
   measurementId: 'G-4PRGFLXVR3',
 };
 
-function getFirebaseConfig() {
+export function getFirebaseConfig() {
   if (!firebaseConfig || !firebaseConfig.apiKey) {
     throw new Error(
       'No Firebase configuration object provided.' +
@@ -28,6 +28,4 @@ const firebaseAppConfig = getFirebaseConfig();
 
 initializeApp(firebaseAppConfig);
 
-const db = firebase.firestore();
-
-export default db;
+export const db = firebase.firestore();

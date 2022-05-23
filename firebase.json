@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "site": "michaelleojacob-photo-tagging-app",
+    "public": "build"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "y"
+  }
+}
