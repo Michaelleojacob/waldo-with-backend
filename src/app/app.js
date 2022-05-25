@@ -1,11 +1,21 @@
-import { useRef } from 'react';
+import { useState } from 'react';
+import { collection, getFirestore, addDoc } from 'firebase/firestore/lite';
 
 const App = () => {
-  const inputRef = useRef(null);
+  const [inputState, setInputState] = useState('');
+
   const handleSubmit = (e) => e.preventDefault();
 
-  const handleButtonSubmit = (e) => {
-    console.log(inputRef.value);
+  const handleChange = (e) => setInputState(e.target.value);
+
+  const handleAddToDB = async () => {
+    try {
+      await addDoc(collection(getFirestore(), 'messages'), {
+        text: inputState,
+      });
+    } catch (error) {
+      console.error('Error writing new message to Firebase Database', error);
+    }
   };
 
   return (
@@ -13,9 +23,9 @@ const App = () => {
       <div>hi from app</div>
       <div>dude wtf</div>
       <form onSubmit={handleSubmit}>
-        <input ref={inputRef}></input>
-        <button onClick={handleButtonSubmit}>submit</button>
+        <input value={inputState} onChange={(e) => handleChange(e)}></input>
       </form>
+      <button onClick={handleAddToDB}>add to db</button>
     </div>
   );
 };
