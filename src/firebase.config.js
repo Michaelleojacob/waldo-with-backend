@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 
-initializeApp({
+const app = initializeApp({
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
@@ -9,3 +9,5 @@ initializeApp({
   appId: process.env.APP_ID,
   measurementId: process.env.MEASUREMENT_ID,
 });
+
+export default app;
