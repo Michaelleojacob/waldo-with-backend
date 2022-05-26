@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { collection, getFirestore, addDoc } from 'firebase/firestore/lite';
+import { addPerson, logPublic } from './utils/firebase';
 
 const App = () => {
   const [inputState, setInputState] = useState('');
@@ -8,15 +8,11 @@ const App = () => {
 
   const handleChange = (e) => setInputState(e.target.value);
 
-  const handleAddToDB = async () => {
-    try {
-      await addDoc(collection(getFirestore(), 'messages'), {
-        text: inputState,
-      });
-    } catch (error) {
-      console.error('Error writing new message to Firebase Database', error);
-    }
+  const handleAddToDB = () => {
+    logPublic();
   };
+
+  const handleAddPerson = () => addPerson();
 
   return (
     <div>
@@ -25,7 +21,8 @@ const App = () => {
       <form onSubmit={handleSubmit}>
         <input value={inputState} onChange={(e) => handleChange(e)}></input>
       </form>
-      <button onClick={handleAddToDB}>add to db</button>
+      <button onClick={handleAddToDB}>log collection</button>
+      <button onClick={handleAddPerson}>add person</button>
     </div>
   );
 };
