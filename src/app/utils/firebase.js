@@ -61,9 +61,8 @@ import { db } from './firestore';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 
 export const addPerson = async ({ first, last, born }) => {
-  console.log('hi');
   try {
-    const docRef = await addDoc(collection(db, 'public'), {
+    const docRef = await addDoc(collection(db, 'gameOneChars'), {
       first,
       last,
       born,
@@ -75,6 +74,9 @@ export const addPerson = async ({ first, last, born }) => {
 };
 
 export const logPublic = async () => {
-  const querySnapShot = await getDocs(collection(db, 'public'));
-  querySnapShot.forEach((doc) => console.log(doc.data()));
+  const querySnapShot = await getDocs(collection(db, 'gameOneChars'));
+  querySnapShot.forEach((doc) => {
+    console.log(doc.id);
+    console.log(doc.data());
+  });
 };
