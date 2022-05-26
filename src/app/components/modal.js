@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import Preview from './preview';
 
-const Modal = (props) => {
-  const { startGameOne, startGameTwo } = props;
+const Modal = ({
+  startGameBasedOnSelectedValue,
+  gameOneInfo,
+  gameTwoInfo,
+  maps,
+}) => {
   const [selected, setSelected] = useState(1);
 
   const handleStart = () => {
     switch (selected) {
       case 1:
-        startGameOne();
+        startGameBasedOnSelectedValue(1);
         break;
       case 2:
-        startGameTwo();
+        startGameBasedOnSelectedValue(2);
         break;
       default:
         console.log('error');
@@ -38,7 +42,13 @@ const Modal = (props) => {
             Universe 113
           </button>
         </div>
-        <Preview selected={selected} start={handleStart} />
+        <Preview
+          selected={selected}
+          start={handleStart}
+          gameOneInfo={gameOneInfo}
+          gameTwoInfo={gameTwoInfo}
+          maps={maps}
+        />
         <div id='artist-name'>artwork by Egor Klycuhnyk</div>
       </div>
     </div>

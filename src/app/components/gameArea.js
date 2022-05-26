@@ -41,7 +41,7 @@ const GameArea = (props) => {
       <img
         onClick={handleClick}
         className='game-image'
-        src={process.env.PUBLIC_URL + gameData.image}
+        src={process.env.PUBLIC_URL + gameData.selectedMap}
         alt={gameData.gameNum}
         onLoad={startGame}></img>
     </div>

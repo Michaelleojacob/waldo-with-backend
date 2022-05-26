@@ -1,8 +1,7 @@
 import NavDropdown from './navdropdown';
 import { useState } from 'react';
 
-const Time = (props) => {
-  const { time } = props;
+const Time = ({ time }) => {
   const secondCounter = time % 60;
   const minuteCounter = Math.floor((time % 3600) / 60);
   const hourCounter = Math.floor(time / 3600);
@@ -22,7 +21,7 @@ const Time = (props) => {
 };
 
 const Nav = (props) => {
-  const { characters, time } = props;
+  const { characters, time, gameData } = props;
   const [dropIsOpen, setDropIsOpen] = useState(false);
 
   const forceClose = () => setDropIsOpen(false);
@@ -31,12 +30,15 @@ const Nav = (props) => {
 
   const handleDropdown = () => toggleIsOpen();
 
+  const handleCheckData = () => console.log(gameData);
+
   return (
     <div id='nav-container'>
       <div id='nav-title'>
         <p id='nav-find'>Find</p>
         <p id='nav-us'>Us</p>
       </div>
+      <button onClick={handleCheckData}>check-data</button>
       <Time time={time} />
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>

@@ -1,14 +1,42 @@
 import Nav from './components/nav';
 import Modal from './components/modal';
-// import getCorrectCharacters from './utils/characters';
 import { useEffect, useState } from 'react';
 import GameArea from './components/gameArea';
 import WinScreen from './components/winscreen';
+import getCorrectCharacters from './utils/staticGameData';
+import {
+  createNewUser,
+  createMaps,
+  staticCharOneInfo,
+  staticCharTwoInfo,
+} from './utils/staticGameData';
 
 const App = () => {
   const [isGameLive, setIsGameLive] = useState(false);
   const [gameData, setGameData] = useState({});
   const [win, setWin] = useState(false);
+  // eslint-disable-next-line
+  const [maps, setMaps] = useState(createMaps());
+  // eslint-disable-next-line
+  const [gameOneInfo, setGameOneInfo] = useState(staticCharOneInfo());
+  // eslint-disable-next-line
+  const [gameTwoInfo, setGameTwoInfo] = useState(staticCharTwoInfo());
+
+  const addStaticValuesToGameData = (num) => {
+    const userInfoObj = createNewUser();
+    setGameData((prevState) => ({
+      ...prevState,
+      ...userInfoObj,
+    }));
+  };
+
+  const addCharactersToGameData = (num) => {
+    const charObj = getCorrectCharacters(num);
+    setGameData((prevState) => ({
+      ...prevState,
+      characters: { ...charObj },
+    }));
+  };
 
   const changeCharacterFound = (characterNum) => {
     setGameData((prevState) => ({
@@ -23,12 +51,26 @@ const App = () => {
     }));
   };
 
-  const startGameOne = () => {
-    setIsGameLive(true);
+  const changeUserSelectedGame = (num) => {
+    setGameData((prevState) => ({
+      ...prevState,
+      selectedGame: num,
+    }));
   };
 
-  const startGameTwo = () => {
+  const addSelectedMapToGameData = (mapNumber) => {
+    const selected = mapNumber === 1 ? maps.one : maps.two;
+    setGameData((prevState) => ({
+      ...prevState,
+      selectedMap: selected,
+    }));
+  };
+
+  const startGameBasedOnSelectedValue = (number) => {
     setIsGameLive(true);
+    addCharactersToGameData(number);
+    addSelectedMapToGameData(number);
+    changeUserSelectedGame(number);
   };
 
   const resetGame = () => {
@@ -52,7 +94,7 @@ const App = () => {
   const setStartTimestamp = () =>
     setGameData((prevState) => ({
       ...prevState,
-      timeStamps: {
+      timestamps: {
         ...prevState.timeStamps,
         start: Date.now(),
       },
@@ -73,6 +115,10 @@ const App = () => {
         end: Date.now(),
       },
     }));
+
+  useEffect(() => {
+    addStaticValuesToGameData();
+  }, []);
 
   useEffect(() => {
     let intervalId;
@@ -96,12 +142,16 @@ const App = () => {
   return (
     <div id='app-container'>
       {!isGameLive && !win ? (
-        <Modal startGameOne={startGameOne} startGameTwo={startGameTwo} />
+        <Modal
+          startGameBasedOnSelectedValue={startGameBasedOnSelectedValue}
+          gameOneInfo={gameOneInfo}
+          gameTwoInfo={gameTwoInfo}
+          maps={maps}
+        />
       ) : null}
       {isGameLive && !win ? (
         <div>
           <Nav
-            resetGame={resetGame}
             characters={gameData.characters}
             time={gameData.time}
             gameData={gameData}
@@ -112,6 +162,7 @@ const App = () => {
             changeCharacterFound={changeCharacterFound}
             startGame={startGame}
             checkForWin={checkForWin}
+            maps={maps}
           />
         </div>
       ) : null}

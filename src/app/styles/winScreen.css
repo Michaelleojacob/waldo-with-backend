@@ -1,0 +1,28 @@
+#winscreen-container {
+  height: 100vh;
+  box-sizing: border-box;
+  background: black;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+#winscreen-content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#speed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#submit-name {
+  display: flex;
+}

@@ -1,0 +1,13 @@
+.game-image {
+  display: flex;
+  width: 100%;
+  height: min-content;
+  margin: 0;
+  padding: 0;
+}
+
+#game-image-container {
+  height: min-content;
+  margin: 0;
+  padding: 0;
+}

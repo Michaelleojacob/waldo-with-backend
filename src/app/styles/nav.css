@@ -1,0 +1,25 @@
+#nav-container {
+  display: flex;
+  justify-content: space-evenly;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #0e0c31;
+  height: 3rem;
+  color: #fff;
+  align-items: center;
+  align-content: center;
+  font-size: 1.5rem;
+}
+
+#nav-title {
+  display: flex;
+}
+
+#nav-find {
+  color: #fff;
+}
+
+#nav-us {
+  color: red;
+}
