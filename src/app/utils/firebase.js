@@ -60,13 +60,13 @@ import { db } from './firestore';
 
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 
-export const addPerson = async () => {
+export const addPerson = async ({ first, last, born }) => {
   console.log('hi');
   try {
     const docRef = await addDoc(collection(db, 'public'), {
-      first: 'miggy',
-      last: 'j',
-      born: 1293,
+      first,
+      last,
+      born,
     });
     console.log(`document written with id: ${docRef.id}`);
   } catch (e) {
@@ -76,7 +76,5 @@ export const addPerson = async () => {
 
 export const logPublic = async () => {
   const querySnapShot = await getDocs(collection(db, 'public'));
-  querySnapShot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-  });
+  querySnapShot.forEach((doc) => console.log(doc.data()));
 };

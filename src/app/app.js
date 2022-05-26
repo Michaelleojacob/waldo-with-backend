@@ -12,7 +12,8 @@ const App = () => {
     logPublic();
   };
 
-  const handleAddPerson = () => addPerson();
+  const handleAddPerson = () =>
+    addPerson({ first: 'lol', last: 'xd', born: 1111 });
 
   return (
     <div>
@@ -28,17 +29,3 @@ const App = () => {
 };
 
 export default App;
-
-// const addValue = () => {
-//   db.collection('values')
-//     .doc(value)
-//     .set({
-//       value: value,
-//     })
-//     .then(function () {
-//       console.log('Value successfully written!');
-//     })
-//     .catch(function (error) {
-//       console.error('Error writing Value: ', error);
-//     });
-// };
