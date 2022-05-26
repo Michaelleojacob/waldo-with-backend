@@ -1,0 +1,27 @@
+@import url('./app/styles/app.css');
+@import url('./app/styles/checkLocation.css');
+@import url('./app/styles/gameimage.css');
+@import url('./app/styles/modal.css');
+@import url('./app/styles/nav.css');
+@import url('./app/styles/navdropdown.css');
+@import url('./app/styles/preview.css');
+@import url('./app/styles/winScreen.css');
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #ff0000;
+}
