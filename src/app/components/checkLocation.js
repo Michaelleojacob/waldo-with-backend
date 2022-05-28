@@ -1,37 +1,22 @@
 //this logic+component is for the pop up that happens on click
 
 import compareXYClickWithXYCharacter from '../utils/checkXYcoords';
+import { logChar, getCharCoords } from '../firebase-utils/firestore';
 
-const CharacterButton = (props) => {
-  return (
-    <button
-      className='character-button'
-      value={props.character.number}
-      onClick={props.handleCheckXYCoords}
-      disabled={props.character.found}
-      style={
-        props.character.found
-          ? {
-              textDecorationLine: 'line-through',
-              textDecorationStyle: 'solid',
-            }
-          : {}
-      }>
-      {props.character.name}
-    </button>
-  );
-};
-
-const CheckLocation = (props) => {
-  //gamedata and characters
-  const { gameData, changeCharacterFound } = props;
-  const { characters } = gameData;
-
+const CheckLocation = ({
+  selectedGame,
+  changeCharacterFound,
+  characters,
+  clickCoords,
+  imageDimensions,
+  naturalDimensions,
+  forceClickInactive,
+}) => {
   //changefound status
   // const { changeCharacterFound } = props;
   //dimensions and click values
-  const { xClickCoord, yClickCoord } = props.clickCoords;
-  const { clientWidth, clientHeight } = props.imageDimensions;
+  const { xClickCoord, yClickCoord } = clickCoords;
+  const { clientWidth, clientHeight } = imageDimensions;
   //need natural for ratio calculations
 
   const closeModal = (e) => {
@@ -39,25 +24,40 @@ const CheckLocation = (props) => {
       e.target.id === 'menu-modal-container' ||
       e.target.id === 'menu-modal-circle'
     ) {
-      props.forceClickInactive();
+      forceClickInactive();
     }
   };
 
-  const handleCheckXYCoords = (e) => {
-    const targetNumber = e.target.value;
-    const character = characters[targetNumber];
+  const handleCheckXYCoords = async (e) => {
+    const characterCoords = await getCharCoords(selectedGame, e.target.value);
+    console.log(characterCoords);
     const obj = {
-      characterCoords: character.coords,
-      clickCoords: props.clickCoords,
-      naturalDimensions: props.naturalDimensions,
-      clientDimensions: props.imageDimensions,
+      characterCoords,
+      clickCoords,
+      naturalDimensions,
+      imageDimensions,
     };
     const result = compareXYClickWithXYCharacter(obj);
-    if (result) {
-      changeCharacterFound(targetNumber);
-    }
-    props.forceClickInactive();
+    console.log(result);
+    // update user if coords match
+    forceClickInactive();
   };
+
+  // const handleCheckXYCoords = (e) => {
+  //   const targetNumber = e.target.value;
+  //   const character = characters[targetNumber];
+  //   const obj = {
+  //     characterCoords: character.coords,
+  //     clickCoords: clickCoords,
+  //     naturalDimensions: naturalDimensions,
+  //     clientDimensions: imageDimensions,
+  //   };
+  //   const result = compareXYClickWithXYCharacter(obj);
+  //   if (result) {
+  //     changeCharacterFound(targetNumber);
+  //   }
+  //   forceClickInactive();
+  // };
 
   return (
     <div
@@ -90,6 +90,26 @@ const CheckLocation = (props) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CharacterButton = ({ character, handleCheckXYCoords }) => {
+  return (
+    <button
+      className='character-button'
+      value={character.number}
+      onClick={handleCheckXYCoords}
+      disabled={character.found}
+      style={
+        character.found
+          ? {
+              textDecorationLine: 'line-through',
+              textDecorationStyle: 'solid',
+            }
+          : {}
+      }>
+      {character.name}
+    </button>
   );
 };
 

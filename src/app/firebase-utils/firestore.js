@@ -56,9 +56,9 @@
 
 // export default store;
 
-import { db } from './firestore';
+import { db } from './firebase';
 
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query } from 'firebase/firestore';
 
 export const addPerson = async ({ first, last, born }) => {
   try {
@@ -73,10 +73,31 @@ export const addPerson = async ({ first, last, born }) => {
   }
 };
 
-export const logPublic = async () => {
+export const logGameOne = async () => {
   const querySnapShot = await getDocs(collection(db, 'gameOneChars'));
   querySnapShot.forEach((doc) => {
     console.log(doc.id);
     console.log(doc.data());
   });
+};
+
+export const getCharCoords = async (gameNum, charNum) => {
+  const coords = {};
+  const selectedGame = gameNum === 1 ? 'gameOneChars' : 'gameTwoChars';
+  const querySnapShot = await getDocs(collection(db, selectedGame));
+  querySnapShot.forEach((item) => {
+    if (item.id === charNum) {
+      coords.x = item.data().x;
+      coords.y = item.data().y;
+    }
+  });
+  return coords;
+};
+
+export const logChar = async (gameNum, charNum) => {
+  const selectedGame = gameNum === 1 ? 'gameOneChars' : 'gameTwoChars';
+  const querySnapShot = await getDocs(collection(db, selectedGame));
+  const checkChar = querySnapShot.filter((item) => item.id === charNum);
+  console.log(checkChar.x);
+  console.log(checkChar.y);
 };

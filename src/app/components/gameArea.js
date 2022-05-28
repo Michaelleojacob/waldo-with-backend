@@ -1,8 +1,7 @@
 import CheckLocation from './checkLocation';
 import { useState } from 'react';
 
-const GameArea = (props) => {
-  const { gameData, changeCharacterFound, startGame } = props;
+const GameArea = ({ gameData, changeCharacterFound, startGame }) => {
   const [clickActive, setClickActive] = useState(false);
   const [clickCoords, setClickCoords] = useState({});
   const [imageDimensions, setImageDimensions] = useState({});
@@ -20,7 +19,6 @@ const GameArea = (props) => {
     setNaturalDimensions({ naturalWidth, naturalHeight });
   };
 
-  // const forceClickInactive = () => setClickActive(false);
   const forceClickInactive = () =>
     setTimeout(() => {
       setClickActive(false);
@@ -30,7 +28,8 @@ const GameArea = (props) => {
     <div id='game-image-container'>
       {clickActive ? (
         <CheckLocation
-          gameData={gameData}
+          selectedGame={gameData.selectedGame}
+          characters={gameData.characters}
           imageDimensions={imageDimensions}
           clickCoords={clickCoords}
           forceClickInactive={forceClickInactive}
