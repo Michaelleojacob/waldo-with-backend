@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const WinScreen = ({ timeStamps, resetGame }) => {
+const WinScreen = ({ timestamps, resetGame }) => {
   const handleSubmit = (e) => e.preventDefault();
 
   const [speed, setSpeed] = useState();
@@ -9,10 +9,10 @@ const WinScreen = ({ timeStamps, resetGame }) => {
   const handleChange = (e) => setName(e.target.value);
 
   useEffect(() => {
-    const milliseconds = timeStamps.end - timeStamps.start;
+    const milliseconds = timestamps.end - timestamps.start;
     const seconds = (milliseconds % 60000) / 1000;
     setSpeed(seconds);
-  }, [timeStamps]);
+  }, [timestamps]);
 
   return (
     <div id='winscreen-container'>

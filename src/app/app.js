@@ -95,7 +95,7 @@ const App = () => {
     setGameData((prevState) => ({
       ...prevState,
       timestamps: {
-        ...prevState.timeStamps,
+        ...prevState.timestamps,
         start: Date.now(),
       },
     }));
@@ -110,8 +110,8 @@ const App = () => {
   const setEndTimestamp = () =>
     setGameData((prevState) => ({
       ...prevState,
-      timeStamps: {
-        ...prevState.timeStamps,
+      timestamps: {
+        ...prevState.timestamps,
         end: Date.now(),
       },
     }));
@@ -167,7 +167,7 @@ const App = () => {
         </div>
       ) : null}
       {!isGameLive && win ? (
-        <WinScreen timeStamps={gameData.timeStamps} resetGame={resetGame} />
+        <WinScreen timestamps={gameData.timestamps} resetGame={resetGame} />
       ) : null}
     </div>
   );
