@@ -20,7 +20,11 @@ export const createTempUser = async () => {
         start: null,
         end: null,
       },
-      time: 0,
+      characters: {
+        one: false,
+        two: false,
+        three: false,
+      },
       createdAt: serverTimestamp(),
     });
     console.log(`document written with id: ${docRef.id}`);
@@ -45,9 +49,16 @@ export const getTempUser = async (id) => {
   }
 };
 
-export const updateTempUser = async (id) => {
-  const noteRef = doc(db, 'tempUsers', id);
-  await updateDoc(noteRef, {
+export const updateTempUserName = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
     name: 'lol',
+  });
+};
+
+export const updateNestedFields = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
+    'characters.one': true,
   });
 };
