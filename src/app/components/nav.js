@@ -39,7 +39,7 @@ const Nav = ({ characters, time, gameData, tempUserDocRef }) => {
   const handleTempUser = async () => await getTempUser(tempUserDocRef);
 
   const handleUpdateTempUser = async () =>
-    await updateNestedFields(tempUserDocRef);
+    await updateNestedFields(tempUserDocRef, 'two');
 
   return (
     <div id='nav-container'>

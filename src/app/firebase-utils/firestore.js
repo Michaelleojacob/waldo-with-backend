@@ -56,9 +56,9 @@ export const updateTempUserName = async (id) => {
   });
 };
 
-export const updateNestedFields = async (id) => {
+export const updateNestedFields = async (id, charNum) => {
   const userRef = doc(db, 'tempUsers', id);
   await updateDoc(userRef, {
-    'characters.one': true,
+    [`characters.${charNum}`]: true,
   });
 };
