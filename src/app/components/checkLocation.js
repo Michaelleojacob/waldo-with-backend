@@ -1,7 +1,7 @@
 //this logic+component is for the pop up that happens on click
 
 import compareXYClickWithXYCharacter from '../utils/checkXYcoords';
-import { logChar, getCharCoords } from '../firebase-utils/firestore';
+import { getCharCoords } from '../firebase-utils/firestore';
 
 const CheckLocation = ({
   selectedGame,
@@ -12,8 +12,6 @@ const CheckLocation = ({
   naturalDimensions,
   forceClickInactive,
 }) => {
-  //changefound status
-  // const { changeCharacterFound } = props;
   //dimensions and click values
   const { xClickCoord, yClickCoord } = clickCoords;
   const { clientWidth, clientHeight } = imageDimensions;
@@ -39,25 +37,11 @@ const CheckLocation = ({
     };
     const result = compareXYClickWithXYCharacter(obj);
     console.log(result);
-    // update user if coords match
+    if (result) {
+      changeCharacterFound(e.target.value);
+    }
     forceClickInactive();
   };
-
-  // const handleCheckXYCoords = (e) => {
-  //   const targetNumber = e.target.value;
-  //   const character = characters[targetNumber];
-  //   const obj = {
-  //     characterCoords: character.coords,
-  //     clickCoords: clickCoords,
-  //     naturalDimensions: naturalDimensions,
-  //     clientDimensions: imageDimensions,
-  //   };
-  //   const result = compareXYClickWithXYCharacter(obj);
-  //   if (result) {
-  //     changeCharacterFound(targetNumber);
-  //   }
-  //   forceClickInactive();
-  // };
 
   return (
     <div

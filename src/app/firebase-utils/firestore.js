@@ -58,7 +58,14 @@
 
 import { db } from './firebase';
 
-import { collection, addDoc, getDocs, query } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  where,
+  getDoc,
+} from 'firebase/firestore';
 
 export const addPerson = async ({ first, last, born }) => {
   try {
@@ -82,17 +89,28 @@ export const logGameOne = async () => {
 };
 
 export const getCharCoords = async (gameNum, charNum) => {
-  const coords = {};
   const selectedGame = gameNum === 1 ? 'gameOneChars' : 'gameTwoChars';
-  const querySnapShot = await getDocs(collection(db, selectedGame));
-  querySnapShot.forEach((item) => {
-    if (item.id === charNum) {
-      coords.x = item.data().x;
-      coords.y = item.data().y;
-    }
-  });
-  return coords;
+  const docRef = doc(db, selectedGame, charNum);
+  const docSnap = await getDoc(docRef);
+  const { x, y } = docSnap.data();
+  return { x, y };
 };
+
+// (above) updated the example to get just a single doc, instead of a collection.
+// (below) old attempt with getCharCoords.
+
+// export const getCharCoords = async (gameNum, charNum) => {
+//   const coords = {};
+//   const selectedGame = gameNum === 1 ? 'gameOneChars' : 'gameTwoChars';
+//   const querySnapShot = await getDocs(collection(db, selectedGame));
+//   querySnapShot.forEach((item) => {
+//     if (item.id === charNum) {
+//       coords.x = item.data().x;
+//       coords.y = item.data().y;
+//     }
+//   });
+//   return coords;
+// };
 
 export const logChar = async (gameNum, charNum) => {
   const selectedGame = gameNum === 1 ? 'gameOneChars' : 'gameTwoChars';
@@ -100,4 +118,10 @@ export const logChar = async (gameNum, charNum) => {
   const checkChar = querySnapShot.filter((item) => item.id === charNum);
   console.log(checkChar.x);
   console.log(checkChar.y);
+};
+
+export const removeOldTempUsers = async () => {
+  const currentTime = Date.now();
+  const getTempUsers = await getDocs(collection(db, 'tempUsers'));
+  const cutoff = currentTime - 2 * 60 * 60 * 1000;
 };
