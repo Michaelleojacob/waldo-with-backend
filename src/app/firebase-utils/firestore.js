@@ -88,6 +88,7 @@ export const deleteAfter24Hours = async () => {
   const userSnap = await getDocs(tempUsers);
   const now = Date.now() / 1000;
   const cutoff = now - 24 * 60 * 60 * 1000;
+  console.log(cutoff);
   return userSnap.forEach((doc) => {
     const { createdAt } = doc.data();
     if (createdAt.seconds < cutoff) {
