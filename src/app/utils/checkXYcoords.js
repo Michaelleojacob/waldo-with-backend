@@ -3,10 +3,9 @@ const checkWidth = (obj) => {
   const xCoordToCheck = obj.xClickCoord * widthRatio;
   const low = obj.x - 50;
   const high = obj.x + 50;
-  if (xCoordToCheck >= low && xCoordToCheck <= high) {
-    return true;
-  }
-  return false;
+
+  const xResult = xCoordToCheck >= low && xCoordToCheck <= high ? true : false;
+  return xResult;
 };
 
 const checkHeight = (obj) => {
@@ -14,15 +13,12 @@ const checkHeight = (obj) => {
   const yCoordToCheck = obj.yClickCoord * heightRatio;
   const low = obj.y - 50;
   const high = obj.y + 50;
-  //   console.log(`low:${low} high:${high} xcoord:${yCoordToCheck}`);
-  if (yCoordToCheck >= low && yCoordToCheck <= high) {
-    return true;
-  }
-  return false;
+
+  const yResult = yCoordToCheck >= low && yCoordToCheck <= high ? true : false;
+  return yResult;
 };
 
 const compareXYClickWithXYCharacter = (obj) => {
-  console.log(obj);
   const { clientWidth, clientHeight } = obj.imageDimensions;
   const { naturalWidth, naturalHeight } = obj.naturalDimensions;
   const { xClickCoord, yClickCoord } = obj.clickCoords;
@@ -31,10 +27,8 @@ const compareXYClickWithXYCharacter = (obj) => {
   const xResult = checkWidth({ x, clientWidth, naturalWidth, xClickCoord });
   const yResult = checkHeight({ y, clientHeight, naturalHeight, yClickCoord });
 
-  if (xResult === true && yResult === true) {
-    return true;
-  }
-  return false;
+  const xyResult = xResult === true && yResult === true ? true : false;
+  return xyResult;
 };
 
 export default compareXYClickWithXYCharacter;

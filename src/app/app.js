@@ -10,7 +10,7 @@ import {
   staticCharOneInfo,
   staticCharTwoInfo,
 } from './utils/staticGameData';
-import { createTempUser } from './firebase-utils/firestore';
+import { createTempUser, deleteAfter24Hours } from './firebase-utils/firestore';
 
 const App = () => {
   const [isGameLive, setIsGameLive] = useState(false);
@@ -119,6 +119,7 @@ const App = () => {
 
   useEffect(() => {
     addStaticValuesToGameData();
+    deleteAfter24Hours();
   }, []);
 
   useEffect(() => {
