@@ -63,18 +63,25 @@ import {
   addDoc,
   getDocs,
   doc,
-  where,
   getDoc,
+  serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore';
 
-export const addPerson = async ({ first, last, born }) => {
+export const createTempUser = async () => {
   try {
-    const docRef = await addDoc(collection(db, 'gameOneChars'), {
-      first,
-      last,
-      born,
+    const docRef = await addDoc(collection(db, 'tempUsers'), {
+      name: 'anon',
+      selectedGame: null,
+      timestamps: {
+        start: null,
+        end: null,
+      },
+      time: 0,
+      createdAt: serverTimestamp(),
     });
     console.log(`document written with id: ${docRef.id}`);
+    return docRef.id;
   } catch (e) {
     console.error('error adding document', e);
   }
@@ -112,16 +119,46 @@ export const getCharCoords = async (gameNum, charNum) => {
 //   return coords;
 // };
 
-export const logChar = async (gameNum, charNum) => {
-  const selectedGame = gameNum === 1 ? 'gameOneChars' : 'gameTwoChars';
-  const querySnapShot = await getDocs(collection(db, selectedGame));
-  const checkChar = querySnapShot.filter((item) => item.id === charNum);
-  console.log(checkChar.x);
-  console.log(checkChar.y);
+//===========================================================================
+
+// export const removeOldTempUsers = async () => {
+//   const currentTime = Date.now();
+//   const getTempUsers = await getDocs(collection(db, 'tempUsers'));
+//   const cutoff = currentTime - 2 * 60 * 60 * 1000;
+// };
+
+// const getNote = async (id) => {
+//   const noteSnapshot = await getDoc(doc(db, 'notes', id));
+//   if (noteSnapshot.exists()) {
+//     return noteSnapshot.data();
+//   } else {
+//     console.log("Note doesn't exist");
+//   }
+// };
+
+export const getTempUser = async (id) => {
+  const userSnap = await getDoc(doc(db, 'tempUsers', id));
+  if (userSnap.exists()) {
+    console.log(userSnap.data());
+  }
 };
 
-export const removeOldTempUsers = async () => {
-  const currentTime = Date.now();
-  const getTempUsers = await getDocs(collection(db, 'tempUsers'));
-  const cutoff = currentTime - 2 * 60 * 60 * 1000;
+export const updateTempUser = async (id) => {
+  const noteRef = doc(db, 'tempUsers', id);
+  await updateDoc(noteRef, {
+    name: 'lol',
+  });
 };
+
+// const frankDocRef = doc(db, "users", "frank");
+// await setDoc(frankDocRef, {
+//     name: "Frank",
+//     favorites: { food: "Pizza", color: "Blue", subject: "recess" },
+//     age: 12
+// });
+
+// // To update age and favorite color:
+// await updateDoc(frankDocRef, {
+//     "age": 13,
+//     "favorites.color": "Red"
+// });

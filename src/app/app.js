@@ -10,6 +10,7 @@ import {
   staticCharOneInfo,
   staticCharTwoInfo,
 } from './utils/staticGameData';
+import { createTempUser } from './firebase-utils/firestore';
 
 const App = () => {
   const [isGameLive, setIsGameLive] = useState(false);
@@ -21,6 +22,7 @@ const App = () => {
   const [gameOneInfo, setGameOneInfo] = useState(staticCharOneInfo());
   // eslint-disable-next-line
   const [gameTwoInfo, setGameTwoInfo] = useState(staticCharTwoInfo());
+  const [tempUserDocRef, setTempUserDocRef] = useState();
 
   const addStaticValuesToGameData = (num) => {
     const userInfoObj = createNewUser();
@@ -66,11 +68,14 @@ const App = () => {
     }));
   };
 
-  const startGameBasedOnSelectedValue = (number) => {
+  const startGameBasedOnSelectedValue = async (number) => {
     setIsGameLive(true);
+    setWin(false);
     addCharactersToGameData(number);
     addSelectedMapToGameData(number);
     changeUserSelectedGame(number);
+    const thisUserRef = await createTempUser();
+    setTempUserDocRef(thisUserRef);
   };
 
   const resetGame = () => {
@@ -79,11 +84,7 @@ const App = () => {
     setGameData({});
   };
 
-  const startGame = () => {
-    setIsGameLive(true);
-    setWin(false);
-    setStartTimestamp();
-  };
+  const createStartTimeStamp = () => setStartTimestamp();
 
   const incrementTime = () =>
     setGameData((prevState) => ({
@@ -156,11 +157,12 @@ const App = () => {
             time={gameData.time}
             gameData={gameData}
             checkForWin={checkForWin}
+            tempUserDocRef={tempUserDocRef}
           />
           <GameArea
             gameData={gameData}
             changeCharacterFound={changeCharacterFound}
-            startGame={startGame}
+            createStartTimeStamp={createStartTimeStamp}
             checkForWin={checkForWin}
             maps={maps}
           />
