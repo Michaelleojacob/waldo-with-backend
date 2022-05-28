@@ -9,6 +9,8 @@ import {
   serverTimestamp,
   updateDoc,
   setDoc,
+  deleteDoc,
+  query,
 } from 'firebase/firestore';
 
 export const createTempUser = async () => {
@@ -49,16 +51,51 @@ export const getTempUser = async (id) => {
   }
 };
 
-export const updateTempUserName = async (id) => {
+export const updateTempUserName = async (id, nameInfo) => {
   const userRef = doc(db, 'tempUsers', id);
   await updateDoc(userRef, {
-    name: 'lol',
+    name: nameInfo,
   });
 };
 
-export const updateNestedFields = async (id, charNum) => {
+export const updatedbCharFound = async (id, charNum) => {
   const userRef = doc(db, 'tempUsers', id);
   await updateDoc(userRef, {
     [`characters.${charNum}`]: true,
   });
+};
+
+export const updatedbStartTimestamp = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
+    'timestamps.start': serverTimestamp(),
+  });
+};
+export const updatedbEndTimestamp = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
+    'timestamps.end': serverTimestamp(),
+  });
+};
+
+export const deleteCurrentTempUser = async (id) => {
+  const useRef = doc(db, 'tempUsers', id);
+  await deleteDoc(useRef);
+};
+
+export const deleteAfter24Hours = async () => {
+  const tempUsers = query(collection(db, 'tempUsers'));
+  const userSnap = await getDocs(tempUsers);
+  const now = Date.now() / 1000;
+  const cutoff = now - 24 * 60 * 60 * 1000;
+  return userSnap.forEach((doc) => {
+    const { createdAt } = doc.data();
+    if (createdAt.seconds < cutoff) {
+      deleteFromFireStore(doc.id);
+    }
+  });
+};
+
+const deleteFromFireStore = async (id) => {
+  await deleteDoc(doc(db, 'tempUsers', id));
 };

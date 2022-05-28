@@ -1,10 +1,6 @@
 import NavDropdown from './navdropdown';
 import { useState } from 'react';
-import {
-  getTempUser,
-  updateNestedFields,
-  updateTempUserName,
-} from '../firebase-utils/firestore';
+import { getTempUser, deleteAfter24Hours } from '../firebase-utils/firestore';
 
 const Time = ({ time }) => {
   const secondCounter = time % 60;
@@ -39,7 +35,7 @@ const Nav = ({ characters, time, gameData, tempUserDocRef }) => {
   const handleTempUser = async () => await getTempUser(tempUserDocRef);
 
   const handleUpdateTempUser = async () =>
-    await updateNestedFields(tempUserDocRef, 'two');
+    await deleteAfter24Hours(tempUserDocRef, 'two');
 
   return (
     <div id='nav-container'>
