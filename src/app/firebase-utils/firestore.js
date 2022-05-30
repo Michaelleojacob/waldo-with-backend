@@ -86,12 +86,12 @@ export const deleteCurrentTempUser = async (id) => {
 export const deleteAfter24Hours = async () => {
   const tempUsers = query(collection(db, 'tempUsers'));
   const userSnap = await getDocs(tempUsers);
-  const now = Date.now() / 1000;
-  const cutoff = now - 24 * 60 * 60 * 1000;
-  return userSnap.forEach((doc) => {
+  const now = Math.floor(Date.now() / 1000);
+  const cutoff = Math.floor(now - 2 * 60 * 60);
+  userSnap.forEach((doc) => {
     const { createdAt } = doc.data();
     if (createdAt.seconds < cutoff) {
-      deleteFromFireStore(doc.id);
+      return deleteFromFireStore(doc.id);
     }
   });
 };

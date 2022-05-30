@@ -40,6 +40,13 @@ const App = () => {
     }));
   };
 
+  const addUserDocRefToGameData = (userIdDocref) => {
+    setGameData((prevState) => ({
+      ...prevState,
+      userIdDocref,
+    }));
+  };
+
   const changeCharacterFound = (characterNum) => {
     setGameData((prevState) => ({
       ...prevState,
@@ -76,6 +83,7 @@ const App = () => {
     changeUserSelectedGame(number);
     const thisUserRef = await createTempUser();
     setTempUserDocRef(thisUserRef);
+    addUserDocRefToGameData(thisUserRef);
   };
 
   const resetGame = () => {
@@ -84,13 +92,13 @@ const App = () => {
     setGameData({});
   };
 
-  const createStartTimeStamp = () => setStartTimestamp();
-
   const incrementTime = () =>
     setGameData((prevState) => ({
       ...prevState,
       time: prevState.time + 1,
     }));
+
+  const createStartTimeStamp = () => setStartTimestamp();
 
   const setStartTimestamp = () =>
     setGameData((prevState) => ({
@@ -119,7 +127,8 @@ const App = () => {
 
   useEffect(() => {
     addStaticValuesToGameData();
-    deleteAfter24Hours();
+    const deleteOld = async () => await deleteAfter24Hours();
+    deleteOld();
   }, []);
 
   useEffect(() => {

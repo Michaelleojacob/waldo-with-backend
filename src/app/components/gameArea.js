@@ -35,6 +35,7 @@ const GameArea = ({ gameData, changeCharacterFound, createStartTimeStamp }) => {
           forceClickInactive={forceClickInactive}
           naturalDimensions={naturalDimensions}
           changeCharacterFound={changeCharacterFound}
+          userIdDocref={gameData.userIdDocref}
         />
       ) : null}
       <img
