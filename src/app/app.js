@@ -14,8 +14,7 @@ import {
   checkdbIfAllCharsAreFound,
   createTempUser,
   deleteAfter24Hours,
-  getTempUser,
-  updatedEndTimestamp,
+  updatedbCharFound,
 } from './firebase-utils/firestore';
 
 const App = () => {
@@ -53,7 +52,17 @@ const App = () => {
     }));
   };
 
-  const changeCharacterFound = (characterNum) => {
+  const checkDbForWin = async () => {
+    const res = await checkdbIfAllCharsAreFound(tempUserDocRef);
+    console.log(res);
+    if (res) {
+      setEndTimestamp();
+      setIsGameLive(false);
+      setWin(true);
+    }
+  };
+
+  const changeCharacterFound = async (characterNum) => {
     setGameData((prevState) => ({
       ...prevState,
       characters: {
@@ -64,6 +73,8 @@ const App = () => {
         },
       },
     }));
+    await updatedbCharFound(tempUserDocRef, characterNum);
+    await checkDbForWin();
   };
 
   const changeUserSelectedGame = (num) => {
@@ -103,8 +114,6 @@ const App = () => {
       ...prevState,
       time: prevState.time + 1,
     }));
-
-  const createStartTimeStamp = () => setStartTimestamp();
 
   const setStartTimestamp = () =>
     setGameData((prevState) => ({
@@ -147,34 +156,10 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, [isGameLive]);
 
-  const checkDbForWin = async () => {
-    const checkDb = await checkdbIfAllCharsAreFound(tempUserDocRef);
-    if (checkDb) {
-      await updatedEndTimestamp(tempUserDocRef);
-      setEndTimestamp();
-      setIsGameLive(false);
-      setWin(true);
-    }
-  };
-  const runCheck = async () => {
-    if (gameData.hasOwnProperty('characters')) {
-      const result = checkForWin();
-      if (result) {
-        await checkDbForWin();
-      }
-    }
-  };
-  runCheck();
-
   useEffect(() => {
     if (gameData.hasOwnProperty('characters')) {
-      const result = checkForWin();
-      if (result) {
-        setEndTimestamp();
-        setIsGameLive(false);
-        setWin(true);
-      }
     }
+
     // eslint-disable-next-line
   }, [gameData.characters]);
 
@@ -198,21 +183,14 @@ const App = () => {
           <GameArea
             gameData={gameData}
             changeCharacterFound={changeCharacterFound}
-            createStartTimeStamp={createStartTimeStamp}
+            createStartTimeStamp={setStartTimestamp}
             checkForWin={checkForWin}
             maps={maps}
           />
         </div>
       ) : null}
       {!isGameLive && win ? (
-        <div>
-          <Nav
-            characters={gameData.characters}
-            time={gameData.time}
-            tempUserDocRef={tempUserDocRef}
-          />
-          <WinScreen timestamps={gameData.timestamps} resetGame={resetGame} />
-        </div>
+        <WinScreen timestamps={gameData.timestamps} resetGame={resetGame} />
       ) : null}
     </div>
   );

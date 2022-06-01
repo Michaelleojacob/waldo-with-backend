@@ -1,7 +1,7 @@
 //this logic+component is for the pop up that happens on click
 
 import compareXYClickWithXYCharacter from '../utils/checkXYcoords';
-import { getCharCoords, updatedbCharFound } from '../firebase-utils/firestore';
+import { getCharCoords } from '../firebase-utils/firestore';
 
 const CheckLocation = ({
   selectedGame,
@@ -11,7 +11,6 @@ const CheckLocation = ({
   imageDimensions,
   naturalDimensions,
   forceClickInactive,
-  userIdDocref,
 }) => {
   //dimensions and click values
   const { xClickCoord, yClickCoord } = clickCoords;
@@ -39,7 +38,6 @@ const CheckLocation = ({
     const result = compareXYClickWithXYCharacter(obj);
     if (result) {
       changeCharacterFound(charNum);
-      updatedbCharFound(userIdDocref, charNum);
     }
     forceClickInactive();
   };
