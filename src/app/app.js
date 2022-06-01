@@ -14,7 +14,10 @@ import {
   checkdbIfAllCharsAreFound,
   createTempUser,
   deleteAfter24Hours,
+  makeCopy,
   updatedbCharFound,
+  updatedbEndTimestamp,
+  updatedbSelectedGame,
 } from './firebase-utils/firestore';
 
 const App = () => {
@@ -54,11 +57,12 @@ const App = () => {
 
   const checkDbForWin = async () => {
     const res = await checkdbIfAllCharsAreFound(tempUserDocRef);
-    console.log(res);
     if (res) {
+      await updatedbEndTimestamp(tempUserDocRef);
       setEndTimestamp();
       setIsGameLive(false);
       setWin(true);
+      await makeCopy(tempUserDocRef);
     }
   };
 
@@ -77,36 +81,32 @@ const App = () => {
     await checkDbForWin();
   };
 
-  const changeUserSelectedGame = (num) => {
-    setGameData((prevState) => ({
-      ...prevState,
-      selectedGame: num,
-    }));
-  };
-
   const addSelectedMapToGameData = (mapNumber) => {
     const selected = mapNumber === 1 ? maps.one : maps.two;
     setGameData((prevState) => ({
       ...prevState,
       selectedMap: selected,
+      selectedGame: mapNumber,
     }));
   };
 
   const startGameBasedOnSelectedValue = async (number) => {
+    addStaticValuesToGameData();
     setIsGameLive(true);
     setWin(false);
     addCharactersToGameData(number);
     addSelectedMapToGameData(number);
-    changeUserSelectedGame(number);
     const thisUserRef = await createTempUser();
-    setTempUserDocRef(thisUserRef);
     addUserDocRefToGameData(thisUserRef);
+    setTempUserDocRef(thisUserRef);
+    await updatedbSelectedGame(thisUserRef, number);
   };
 
   const resetGame = () => {
     setIsGameLive(false);
     setWin(false);
     setGameData({});
+    setTempUserDocRef();
   };
 
   const incrementTime = () =>
@@ -142,7 +142,6 @@ const App = () => {
 
   // on first render
   useEffect(() => {
-    addStaticValuesToGameData();
     const deleteOld = async () => await deleteAfter24Hours();
     deleteOld();
   }, []);
@@ -179,6 +178,7 @@ const App = () => {
             characters={gameData.characters}
             time={gameData.time}
             tempUserDocRef={tempUserDocRef}
+            gameData={gameData}
           />
           <GameArea
             gameData={gameData}

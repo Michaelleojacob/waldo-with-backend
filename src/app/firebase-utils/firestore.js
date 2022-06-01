@@ -28,10 +28,16 @@ export const createTempUser = async () => {
       },
       createdAt: serverTimestamp(),
     });
-    console.log(`document written with id: ${docRef.id}`);
     return docRef.id;
   } catch (e) {
     console.error('error adding document', e);
+  }
+};
+
+export const getTempUser = async (id) => {
+  const userSnap = await getDoc(doc(db, 'tempUsers', id));
+  if (userSnap.exists()) {
+    return userSnap.data();
   }
 };
 
@@ -43,11 +49,11 @@ export const getCharCoords = async (gameNum, charNum) => {
   return { x, y };
 };
 
-export const getTempUser = async (id) => {
-  const userSnap = await getDoc(doc(db, 'tempUsers', id));
-  if (userSnap.exists()) {
-    return userSnap.data();
-  }
+export const updatedbSelectedGame = async (id, mapNum) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
+    selectedGame: mapNum,
+  });
 };
 
 export const checkIfUserExists = async (id) => {
@@ -126,4 +132,31 @@ export const checkdbIfAllCharsAreFound = async (id) => {
   const userSnap = await getDoc(userRef);
   const { characters } = userSnap.data();
   return Object.values(characters).every((item) => item === true);
+};
+
+export const makeCopy = async (id) => {
+  const user = await getTempUser(id);
+  await pushCopyCorrectly(user);
+  // await setDoc(doc(db, 'gameOneHighScores'));
+};
+
+const pushCopyCorrectly = async (user) => {
+  switch (user.selectedGame) {
+    //push to gameOneHighscores
+    case 1:
+      await addDoc(collection(db, 'gameOneHighscores'), {
+        user,
+      });
+      break;
+    //push to gameTwohighscores
+    case 2:
+      await addDoc(collection(db, 'gameTwoHighscores'), {
+        user,
+      });
+      break;
+    //error
+    default:
+      console.error('error copying to highscores');
+      break;
+  }
 };
