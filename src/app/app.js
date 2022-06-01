@@ -149,26 +149,32 @@ const App = () => {
 
   const checkDbForWin = async () => {
     const checkDb = await checkdbIfAllCharsAreFound(tempUserDocRef);
-    console.log(checkDb);
     if (checkDb) {
       await updatedEndTimestamp(tempUserDocRef);
       setEndTimestamp();
       setIsGameLive(false);
       setWin(true);
-      const userInfo = await getTempUser();
-      console.log(userInfo);
     }
   };
+  const runCheck = async () => {
+    if (gameData.hasOwnProperty('characters')) {
+      const result = checkForWin();
+      if (result) {
+        await checkDbForWin();
+      }
+    }
+  };
+  runCheck();
 
   useEffect(() => {
-    (async () => {
-      if (gameData.hasOwnProperty('characters')) {
-        const result = checkForWin();
-        if (result) {
-          await checkDbForWin();
-        }
+    if (gameData.hasOwnProperty('characters')) {
+      const result = checkForWin();
+      if (result) {
+        setEndTimestamp();
+        setIsGameLive(false);
+        setWin(true);
       }
-    })();
+    }
     // eslint-disable-next-line
   }, [gameData.characters]);
 
@@ -199,7 +205,14 @@ const App = () => {
         </div>
       ) : null}
       {!isGameLive && win ? (
-        <WinScreen timestamps={gameData.timestamps} resetGame={resetGame} />
+        <div>
+          <Nav
+            characters={gameData.characters}
+            time={gameData.time}
+            tempUserDocRef={tempUserDocRef}
+          />
+          <WinScreen timestamps={gameData.timestamps} resetGame={resetGame} />
+        </div>
       ) : null}
     </div>
   );
