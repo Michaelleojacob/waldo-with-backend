@@ -1,6 +1,9 @@
 import NavDropdown from './navdropdown';
 import { useState } from 'react';
-import { deleteAfter24Hours, getTempUser } from '../firebase-utils/firestore';
+import {
+  checkdbIfAllCharsAreFound,
+  getTempUser,
+} from '../firebase-utils/firestore';
 
 const Time = ({ time }) => {
   const secondCounter = time % 60;
@@ -21,7 +24,7 @@ const Time = ({ time }) => {
   );
 };
 
-const Nav = ({ characters, time, gameData, tempUserDocRef }) => {
+const Nav = ({ characters, time, tempUserDocRef }) => {
   const [dropIsOpen, setDropIsOpen] = useState(false);
 
   const forceClose = () => setDropIsOpen(false);
@@ -30,21 +33,19 @@ const Nav = ({ characters, time, gameData, tempUserDocRef }) => {
 
   const handleDropdown = () => toggleIsOpen();
 
-  const handleCheckData = () => console.log(gameData);
-
-  const handleTempUser = async () => await getTempUser(tempUserDocRef);
-
-  const handleDelOld = async () => await deleteAfter24Hours();
-
+  const handleFSTest = async () => {
+    const userInfo = await getTempUser(tempUserDocRef);
+    console.log(userInfo);
+    const thing = await checkdbIfAllCharsAreFound(tempUserDocRef);
+    console.log(thing);
+  };
   return (
     <div id='nav-container'>
       <div id='nav-title'>
         <p id='nav-find'>Find</p>
         <p id='nav-us'>Us</p>
       </div>
-      <button onClick={handleCheckData}>check-data</button>
-      <button onClick={handleTempUser}>TU</button>
-      <button onClick={handleDelOld}>DelOld</button>
+      <button onClick={handleFSTest}>TU</button>
       <Time time={time} />
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>

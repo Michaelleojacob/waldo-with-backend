@@ -8,7 +8,6 @@ import {
   getDoc,
   serverTimestamp,
   updateDoc,
-  setDoc,
   deleteDoc,
   query,
 } from 'firebase/firestore';
@@ -47,8 +46,13 @@ export const getCharCoords = async (gameNum, charNum) => {
 export const getTempUser = async (id) => {
   const userSnap = await getDoc(doc(db, 'tempUsers', id));
   if (userSnap.exists()) {
-    console.log(userSnap.data());
+    return userSnap.data();
   }
+};
+
+export const checkIfUserExists = async (id) => {
+  const userSnap = await getDoc(doc(db, 'tempUsers', id));
+  return userSnap.exists();
 };
 
 export const updateTempUserName = async (id, nameInfo) => {
@@ -71,6 +75,23 @@ export const updatedbStartTimestamp = async (id) => {
     'timestamps.start': serverTimestamp(),
   });
 };
+
+export const updatedEndTimestamp = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
+    'timestamps.end': serverTimestamp(),
+  });
+  return await getTotalTime(id);
+};
+
+export const getTotalTime = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  const { timestamps } = (await getDoc(userRef)).data();
+  await updateDoc(userRef, {
+    time: timestamps.end - timestamps.end,
+  });
+};
+
 export const updatedbEndTimestamp = async (id) => {
   const userRef = doc(db, 'tempUsers', id);
   await updateDoc(userRef, {
@@ -98,4 +119,11 @@ export const deleteAfter24Hours = async () => {
 
 const deleteFromFireStore = async (id) => {
   await deleteDoc(doc(db, 'tempUsers', id));
+};
+
+export const checkdbIfAllCharsAreFound = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  const userSnap = await getDoc(userRef);
+  const { characters } = userSnap.data();
+  return Object.values(characters).every((item) => item === true);
 };

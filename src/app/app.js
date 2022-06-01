@@ -10,7 +10,13 @@ import {
   staticCharOneInfo,
   staticCharTwoInfo,
 } from './utils/staticGameData';
-import { createTempUser, deleteAfter24Hours } from './firebase-utils/firestore';
+import {
+  checkdbIfAllCharsAreFound,
+  createTempUser,
+  deleteAfter24Hours,
+  getTempUser,
+  updatedEndTimestamp,
+} from './firebase-utils/firestore';
 
 const App = () => {
   const [isGameLive, setIsGameLive] = useState(false);
@@ -125,12 +131,14 @@ const App = () => {
       },
     }));
 
+  // on first render
   useEffect(() => {
     addStaticValuesToGameData();
     const deleteOld = async () => await deleteAfter24Hours();
     deleteOld();
   }, []);
 
+  // timer
   useEffect(() => {
     let intervalId;
     if (isGameLive) {
@@ -139,14 +147,28 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, [isGameLive]);
 
-  useEffect(() => {
-    if (gameData.hasOwnProperty('characters')) {
-      if (Object.values(gameData.characters).every((char) => char.found)) {
-        setEndTimestamp();
-        setIsGameLive(false);
-        setWin(true);
-      }
+  const checkDbForWin = async () => {
+    const checkDb = await checkdbIfAllCharsAreFound(tempUserDocRef);
+    console.log(checkDb);
+    if (checkDb) {
+      await updatedEndTimestamp(tempUserDocRef);
+      setEndTimestamp();
+      setIsGameLive(false);
+      setWin(true);
+      const userInfo = await getTempUser();
+      console.log(userInfo);
     }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (gameData.hasOwnProperty('characters')) {
+        const result = checkForWin();
+        if (result) {
+          await checkDbForWin();
+        }
+      }
+    })();
     // eslint-disable-next-line
   }, [gameData.characters]);
 
@@ -165,8 +187,6 @@ const App = () => {
           <Nav
             characters={gameData.characters}
             time={gameData.time}
-            gameData={gameData}
-            checkForWin={checkForWin}
             tempUserDocRef={tempUserDocRef}
           />
           <GameArea

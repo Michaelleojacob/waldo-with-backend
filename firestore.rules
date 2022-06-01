@@ -14,5 +14,8 @@ service cloud.firestore {
       match /gameTwoHighscores/{document=**} {
       allow read, write:if true;
     }
+      match /tempUsers/{document=**} {
+      allow read, write:if true;
+    }
   }
 }
