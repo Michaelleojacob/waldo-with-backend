@@ -10,6 +10,8 @@ import {
   updateDoc,
   deleteDoc,
   query,
+  orderBy,
+  limit,
 } from 'firebase/firestore';
 
 export const createTempUser = async () => {
@@ -39,6 +41,11 @@ export const getTempUser = async (id) => {
   if (userSnap.exists()) {
     return userSnap.data();
   }
+};
+
+export const getFinalTime = async (id) => {
+  const userInfo = await getTempUser(id);
+  return userInfo.time;
 };
 
 export const getCharCoords = async (gameNum, charNum) => {
@@ -93,8 +100,9 @@ export const updatedEndTimestamp = async (id) => {
 export const getTotalTime = async (id) => {
   const userRef = doc(db, 'tempUsers', id);
   const { timestamps } = (await getDoc(userRef)).data();
+  const totalTime = timestamps.end - timestamps.start;
   await updateDoc(userRef, {
-    time: timestamps.end - timestamps.end,
+    time: totalTime,
   });
 };
 
@@ -137,7 +145,6 @@ export const checkdbIfAllCharsAreFound = async (id) => {
 export const makeCopy = async (id) => {
   const user = await getTempUser(id);
   await pushCopyCorrectly(user);
-  // await setDoc(doc(db, 'gameOneHighScores'));
 };
 
 const pushCopyCorrectly = async (user) => {
@@ -145,13 +152,13 @@ const pushCopyCorrectly = async (user) => {
     //push to gameOneHighscores
     case 1:
       await addDoc(collection(db, 'gameOneHighscores'), {
-        user,
+        ...user,
       });
       break;
     //push to gameTwohighscores
     case 2:
       await addDoc(collection(db, 'gameTwoHighscores'), {
-        user,
+        ...user,
       });
       break;
     //error
@@ -159,4 +166,16 @@ const pushCopyCorrectly = async (user) => {
       console.error('error copying to highscores');
       break;
   }
+};
+
+export const getHighscores = async (gameNum) => {
+  const arr = [];
+  const highscoresRef = query(
+    collection(db, gameNum),
+    orderBy('time', 'asc'),
+    limit(10)
+  );
+  const collectionSnap = await getDocs(highscoresRef);
+  collectionSnap.docs.map((thing) => arr.push(thing.data()));
+  return arr;
 };

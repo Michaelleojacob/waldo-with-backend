@@ -14,10 +14,12 @@ import {
   checkdbIfAllCharsAreFound,
   createTempUser,
   deleteAfter24Hours,
+  getTotalTime,
   makeCopy,
   updatedbCharFound,
   updatedbEndTimestamp,
   updatedbSelectedGame,
+  updatedbStartTimestamp,
 } from './firebase-utils/firestore';
 
 const App = () => {
@@ -48,13 +50,6 @@ const App = () => {
     }));
   };
 
-  const addUserDocRefToGameData = (userIdDocref) => {
-    setGameData((prevState) => ({
-      ...prevState,
-      userIdDocref,
-    }));
-  };
-
   const checkDbForWin = async () => {
     const res = await checkdbIfAllCharsAreFound(tempUserDocRef);
     if (res) {
@@ -62,6 +57,7 @@ const App = () => {
       setEndTimestamp();
       setIsGameLive(false);
       setWin(true);
+      await getTotalTime(tempUserDocRef);
       await makeCopy(tempUserDocRef);
     }
   };
@@ -93,13 +89,13 @@ const App = () => {
   const startGameBasedOnSelectedValue = async (number) => {
     addStaticValuesToGameData();
     setIsGameLive(true);
-    setWin(false);
     addCharactersToGameData(number);
     addSelectedMapToGameData(number);
     const thisUserRef = await createTempUser();
-    addUserDocRefToGameData(thisUserRef);
     setTempUserDocRef(thisUserRef);
     await updatedbSelectedGame(thisUserRef, number);
+    await updatedbStartTimestamp(thisUserRef);
+    setStartTimestamp();
   };
 
   const resetGame = () => {
@@ -190,7 +186,11 @@ const App = () => {
         </div>
       ) : null}
       {!isGameLive && win ? (
-        <WinScreen timestamps={gameData.timestamps} resetGame={resetGame} />
+        <WinScreen
+          timestamps={gameData.timestamps}
+          resetGame={resetGame}
+          thisUserRef={tempUserDocRef}
+        />
       ) : null}
     </div>
   );

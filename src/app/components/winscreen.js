@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { getHighscores } from '../firebase-utils/firestore';
 
 const WinScreen = ({ timestamps, resetGame }) => {
   const handleSubmit = (e) => e.preventDefault();
 
   const [speed, setSpeed] = useState();
   const [name, setName] = useState('');
+  const [scores, setScores] = useState();
 
   const handleChange = (e) => setName(e.target.value);
 
@@ -12,6 +14,15 @@ const WinScreen = ({ timestamps, resetGame }) => {
     const milliseconds = timestamps.end - timestamps.start;
     const seconds = (milliseconds % 60000) / 1000;
     setSpeed(seconds);
+
+    const fetchHighscores = async () => {
+      const arr = await getHighscores('gameOneHighscores');
+      console.log(arr);
+      setScores(arr);
+      return arr;
+    };
+    fetchHighscores();
+    console.log(scores);
   }, [timestamps]);
 
   return (
