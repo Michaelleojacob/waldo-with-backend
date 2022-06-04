@@ -47,12 +47,13 @@
 .highscores {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 60%;
 }
 
 .highscores > * {
   justify-content: space-between;
   padding: 0.5rem;
+  align-items: center;
 }
 
 .score {
@@ -63,4 +64,13 @@
   display: flex;
   color: gold;
   font-size: 2rem;
+}
+
+.display-input {
+  display: block;
+  visibility: initial;
+}
+
+.hide-input {
+  visibility: hidden;
 }

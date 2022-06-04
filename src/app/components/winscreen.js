@@ -60,6 +60,7 @@ const WinScreen = ({
                     : 'your score has been recorded!'}
                 </div>
                 <input
+                  className={allowSubmit ? 'display-input' : 'hide-input'}
                   placeholder='anon'
                   value={name}
                   onChange={updateFieldChange(tempUserDocRef)}
