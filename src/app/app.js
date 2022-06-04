@@ -38,17 +38,14 @@ const App = () => {
 
   const addStaticValuesToGameData = (num) => {
     const userInfoObj = createNewUser();
+    const charObj = getCorrectCharacters(num);
+    const selected = num === 1 ? maps.one : maps.two;
     setGameData((prevState) => ({
       ...prevState,
       ...userInfoObj,
-    }));
-  };
-
-  const addCharactersToGameData = (num) => {
-    const charObj = getCorrectCharacters(num);
-    setGameData((prevState) => ({
-      ...prevState,
       characters: { ...charObj },
+      selectedMap: selected,
+      selectedGame: num,
     }));
   };
 
@@ -123,20 +120,9 @@ const App = () => {
     await checkDbForWin();
   };
 
-  const addSelectedMapToGameData = (mapNumber) => {
-    const selected = mapNumber === 1 ? maps.one : maps.two;
-    setGameData((prevState) => ({
-      ...prevState,
-      selectedMap: selected,
-      selectedGame: mapNumber,
-    }));
-  };
-
   const startGameBasedOnSelectedValue = async (number) => {
-    addStaticValuesToGameData();
+    addStaticValuesToGameData(number);
     setIsGameLive(true);
-    addCharactersToGameData(number);
-    addSelectedMapToGameData(number);
     const thisUserRef = await createTempUser();
     setTempUserDocRef(thisUserRef);
     await updatedbSelectedGame(thisUserRef, number);
