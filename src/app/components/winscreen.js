@@ -46,13 +46,19 @@ const WinScreen = ({
         </div>
         <div id='speed'>
           <div>final time:</div>
-          <div>{time === null ? 'loading...' : time.toFixed(2)}</div>
+          <div id='completion-time'>
+            {time === null ? 'loading...' : time.toFixed(2)}
+          </div>
         </div>
         {userMadeHighscores ? (
           <form id='winscreen-form' onSubmit={handleSubmit}>
-            <fieldset disabled={!allowSubmit}>
+            <fieldset id='winscreen-fieldset' disabled={!allowSubmit}>
               <div id='submit-name'>
-                <div>enter a name:</div>
+                <div>
+                  {allowSubmit
+                    ? 'enter a name:'
+                    : 'your score has been recorded!'}
+                </div>
                 <input
                   placeholder='anon'
                   value={name}

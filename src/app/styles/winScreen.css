@@ -20,6 +20,10 @@
   flex-wrap: wrap;
 }
 
+#winscreen-fieldset {
+  border: 1px transparent;
+}
+
 #speed {
   display: flex;
   flex-direction: column;
@@ -33,6 +37,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
+}
+
+#completion-time {
+  color: gold;
 }
 
 .highscores {

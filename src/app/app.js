@@ -139,7 +139,6 @@ const App = () => {
   };
 
   const resetGame = async () => {
-    console.log(allowSubmit);
     if (userMadeHighscores && allowSubmit) {
       setAllowSubmit(false);
       await updateTempUserName(tempUserDocRef, gameData.name);
