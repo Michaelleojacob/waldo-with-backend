@@ -70,11 +70,6 @@ export const updateUserWithUserID = async (id) => {
   });
 };
 
-export const checkIfUserExists = async (id) => {
-  const userSnap = await getDoc(doc(db, 'tempUsers', id));
-  return userSnap.exists();
-};
-
 export const updateTempUserName = async (id, nameInfo) => {
   const userRef = doc(db, 'tempUsers', id);
   await updateDoc(userRef, {
@@ -96,14 +91,6 @@ export const updatedbStartTimestamp = async (id) => {
   });
 };
 
-export const updatedEndTimestamp = async (id) => {
-  const userRef = doc(db, 'tempUsers', id);
-  await updateDoc(userRef, {
-    'timestamps.end': serverTimestamp(),
-  });
-  return await getTotalTime(id);
-};
-
 export const getTotalTime = async (id) => {
   const userRef = doc(db, 'tempUsers', id);
   const { timestamps } = (await getDoc(userRef)).data();
@@ -119,11 +106,6 @@ export const updatedbEndTimestamp = async (id) => {
   await updateDoc(userRef, {
     'timestamps.end': serverTimestamp(),
   });
-};
-
-export const deleteCurrentTempUser = async (id) => {
-  const useRef = doc(db, 'tempUsers', id);
-  await deleteDoc(useRef);
 };
 
 export const deleteAfter24Hours = async () => {
