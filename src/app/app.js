@@ -14,12 +14,16 @@ import {
   checkdbIfAllCharsAreFound,
   createTempUser,
   deleteAfter24Hours,
+  getHighscores,
+  getTempUser,
   getTotalTime,
-  makeCopy,
+  pushToHighscores,
   updatedbCharFound,
   updatedbEndTimestamp,
   updatedbSelectedGame,
   updatedbStartTimestamp,
+  updateUserWithUserID,
+  updateTempUserName,
 } from './firebase-utils/firestore';
 
 const App = () => {
@@ -33,6 +37,10 @@ const App = () => {
   // eslint-disable-next-line
   const [gameTwoInfo, setGameTwoInfo] = useState(staticCharTwoInfo());
   const [tempUserDocRef, setTempUserDocRef] = useState();
+  const [highscores, setHighscores] = useState([]);
+  const [time, setTime] = useState(null);
+  const [userMadeHighscores, setUserMadeHighscores] = useState(false);
+  const [allowSubmit, setAllowSubmit] = useState(false);
 
   const addStaticValuesToGameData = (num) => {
     const userInfoObj = createNewUser();
@@ -57,9 +65,32 @@ const App = () => {
       setEndTimestamp();
       setIsGameLive(false);
       setWin(true);
-      await getTotalTime(tempUserDocRef);
-      await makeCopy(tempUserDocRef);
+      const time = await getTotalTime(tempUserDocRef);
+      setTime(time);
+      await checkIfUserMadeHighscores();
     }
+  };
+
+  const checkIfUserMadeHighscores = async () => {
+    const user = await getTempUser(tempUserDocRef);
+
+    if (highscores.length === 0) return makeNewHighscores(user);
+
+    if (highscores.length < 10) return makeNewHighscores(user);
+
+    return user.time < highscores[highscores.length - 1].time
+      ? makeNewHighscores(user)
+      : false;
+  };
+
+  const makeNewHighscores = (user) => {
+    setUserMadeHighscores(true);
+    setAllowSubmit(true);
+    const arr = [...highscores];
+    if (arr.length === 10) arr.pop();
+    arr.push(user);
+    const sortedArr = arr.sort((a, b) => a.time - b.time);
+    setHighscores(sortedArr);
   };
 
   const changeCharacterFound = async (characterNum) => {
@@ -95,14 +126,33 @@ const App = () => {
     setTempUserDocRef(thisUserRef);
     await updatedbSelectedGame(thisUserRef, number);
     await updatedbStartTimestamp(thisUserRef);
+    await updateUserWithUserID(thisUserRef);
     setStartTimestamp();
+    setHighscores(await getHighscores(number));
   };
 
-  const resetGame = () => {
+  const updateUserName = (newName) => {
+    setGameData((prevState) => ({
+      ...prevState,
+      name: newName,
+    }));
+  };
+
+  const resetGame = async () => {
+    console.log(allowSubmit);
+    if (userMadeHighscores && allowSubmit) {
+      setAllowSubmit(false);
+      await updateTempUserName(tempUserDocRef, gameData.name);
+      await pushToHighscores(tempUserDocRef);
+    }
     setIsGameLive(false);
     setWin(false);
     setGameData({});
     setTempUserDocRef();
+    setHighscores([]);
+    setTime(null);
+    setUserMadeHighscores(false);
+    setAllowSubmit(false);
   };
 
   const incrementTime = () =>
@@ -175,6 +225,7 @@ const App = () => {
             time={gameData.time}
             tempUserDocRef={tempUserDocRef}
             gameData={gameData}
+            highscores={highscores}
           />
           <GameArea
             gameData={gameData}
@@ -189,7 +240,15 @@ const App = () => {
         <WinScreen
           timestamps={gameData.timestamps}
           resetGame={resetGame}
-          thisUserRef={tempUserDocRef}
+          tempUserDocRef={tempUserDocRef}
+          highscores={highscores}
+          setHighscores={setHighscores}
+          time={time}
+          userMadeHighscores={userMadeHighscores}
+          updateUserName={updateUserName}
+          name={gameData.name}
+          allowSubmit={allowSubmit}
+          setAllowSubmit={setAllowSubmit}
         />
       ) : null}
     </div>

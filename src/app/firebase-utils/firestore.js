@@ -63,6 +63,13 @@ export const updatedbSelectedGame = async (id, mapNum) => {
   });
 };
 
+export const updateUserWithUserID = async (id) => {
+  const userRef = doc(db, 'tempUsers', id);
+  await updateDoc(userRef, {
+    id,
+  });
+};
+
 export const checkIfUserExists = async (id) => {
   const userSnap = await getDoc(doc(db, 'tempUsers', id));
   return userSnap.exists();
@@ -104,6 +111,7 @@ export const getTotalTime = async (id) => {
   await updateDoc(userRef, {
     time: totalTime,
   });
+  return totalTime;
 };
 
 export const updatedbEndTimestamp = async (id) => {
@@ -142,33 +150,22 @@ export const checkdbIfAllCharsAreFound = async (id) => {
   return Object.values(characters).every((item) => item === true);
 };
 
-export const makeCopy = async (id) => {
+const setGameOneOrGametwo = (num) => {
+  if (num === 1) return 'gameOneHighscores';
+  if (num === 2) return 'gameTwoHighscores';
+  return;
+};
+
+export const pushToHighscores = async (id) => {
   const user = await getTempUser(id);
-  await pushCopyCorrectly(user);
+  const gameNum = setGameOneOrGametwo(user.selectedGame);
+  await addDoc(collection(db, gameNum), {
+    ...user,
+  });
 };
 
-const pushCopyCorrectly = async (user) => {
-  switch (user.selectedGame) {
-    //push to gameOneHighscores
-    case 1:
-      await addDoc(collection(db, 'gameOneHighscores'), {
-        ...user,
-      });
-      break;
-    //push to gameTwohighscores
-    case 2:
-      await addDoc(collection(db, 'gameTwoHighscores'), {
-        ...user,
-      });
-      break;
-    //error
-    default:
-      console.error('error copying to highscores');
-      break;
-  }
-};
-
-export const getHighscores = async (gameNum) => {
+export const getHighscores = async (num) => {
+  const gameNum = setGameOneOrGametwo(num);
   const arr = [];
   const highscoresRef = query(
     collection(db, gameNum),

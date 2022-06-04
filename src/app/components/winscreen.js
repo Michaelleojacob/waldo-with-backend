@@ -1,50 +1,98 @@
-import { useState, useEffect } from 'react';
-import { getHighscores } from '../firebase-utils/firestore';
+import {
+  updateTempUserName,
+  pushToHighscores,
+} from '../firebase-utils/firestore';
 
-const WinScreen = ({ timestamps, resetGame }) => {
-  const handleSubmit = (e) => e.preventDefault();
+const WinScreen = ({
+  resetGame,
+  tempUserDocRef,
+  highscores,
+  setHighscores,
+  time,
+  userMadeHighscores,
+  name,
+  updateUserName,
+  allowSubmit,
+  setAllowSubmit,
+}) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!allowSubmit || !userMadeHighscores) return;
+    if (allowSubmit && userMadeHighscores) {
+      setAllowSubmit(false);
+      await updateTempUserName(tempUserDocRef, name);
+      await pushToHighscores(tempUserDocRef);
+    }
+    return;
+  };
 
-  const [speed, setSpeed] = useState();
-  const [name, setName] = useState('');
-  const [scores, setScores] = useState();
+  const getUserIndex = (arr, id) => arr.filter((item) => item.id === id);
 
-  const handleChange = (e) => setName(e.target.value);
-
-  useEffect(() => {
-    const milliseconds = timestamps.end - timestamps.start;
-    const seconds = (milliseconds % 60000) / 1000;
-    setSpeed(seconds);
-
-    const fetchHighscores = async () => {
-      const arr = await getHighscores('gameOneHighscores');
-      console.log(arr);
-      setScores(arr);
-      return arr;
-    };
-    fetchHighscores();
-    console.log(scores);
-  }, [timestamps]);
+  const updateFieldChange = (id) => (e) => {
+    let newArr = [...highscores];
+    const user = getUserIndex(newArr, id);
+    user[0].name = e.target.value.replace(/[^a-z]/gi, '');
+    updateUserName(user[0].name);
+    setHighscores(newArr);
+  };
 
   return (
     <div id='winscreen-container'>
       <div id='winscreen-content'>
-        <div>congrats you won!</div>
+        <div>
+          {userMadeHighscores
+            ? 'congrats you made highscores!'
+            : 'congrats you won!'}
+        </div>
         <div id='speed'>
           <div>final time:</div>
-          <div>{speed}</div>
+          <div>{time === null ? 'loading...' : time.toFixed(2)}</div>
         </div>
-        <form id='submit-name' onSubmit={handleSubmit}>
-          <div>enter a name:</div>
-          <input
-            placeholder='anon'
-            value={name}
-            onChange={handleChange}></input>
-        </form>
+        {userMadeHighscores ? (
+          <form id='winscreen-form' onSubmit={handleSubmit}>
+            <fieldset disabled={!allowSubmit}>
+              <div id='submit-name'>
+                <div>enter a name:</div>
+                <input
+                  placeholder='anon'
+                  value={name}
+                  onChange={updateFieldChange(tempUserDocRef)}
+                  maxLength={4}
+                  type='text'></input>
+              </div>
+            </fieldset>
+          </form>
+        ) : null}
         <button onClick={resetGame}>play again?</button>
-        <div>highscores will go here</div>
+        <HighScores highscores={highscores} tempUserDocRef={tempUserDocRef} />
       </div>
     </div>
   );
 };
 
 export default WinScreen;
+
+const HighScores = ({ highscores, tempUserDocRef }) => {
+  return (
+    <div className='highscores'>
+      {highscores.map((score, index) => (
+        <EachScore
+          obj={score}
+          index={index}
+          key={index}
+          tempUserDocRef={tempUserDocRef}
+        />
+      ))}
+    </div>
+  );
+};
+
+const EachScore = ({ obj, index, tempUserDocRef }) => {
+  return (
+    <div className={obj.id === tempUserDocRef ? 'userScore' : 'score'}>
+      <div>{index + 1}.</div>
+      <div>{obj.name}</div>
+      <div>{Number(obj.time).toFixed(2)}</div>
+    </div>
+  );
+};

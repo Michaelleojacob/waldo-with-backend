@@ -1,15 +1,18 @@
 #winscreen-container {
   height: 100vh;
+  width: 100vw;
   box-sizing: border-box;
   background: black;
   color: #fff;
   padding: 1rem;
   display: flex;
   justify-content: center;
+  font-size: 1.5rem;
 }
 
 #winscreen-content {
   display: flex;
+  width: inherit;
   flex-direction: column;
   margin-top: 5%;
   gap: 1rem;
@@ -23,6 +26,32 @@
   align-items: center;
 }
 
+#winscreen-form {
+  display: flex;
+}
 #submit-name {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.highscores {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.highscores > * {
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.score {
+  display: flex;
+}
+
+.userScore {
+  display: flex;
+  color: gold;
+  font-size: 2rem;
 }

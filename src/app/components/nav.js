@@ -1,6 +1,5 @@
 import NavDropdown from './navdropdown';
 import { useState } from 'react';
-import { makeCopy } from '../firebase-utils/firestore';
 
 const Time = ({ time }) => {
   const secondCounter = time % 60;
@@ -21,7 +20,7 @@ const Time = ({ time }) => {
   );
 };
 
-const Nav = ({ characters, time, gameData }) => {
+const Nav = ({ characters, time, gameData, highscores }) => {
   const [dropIsOpen, setDropIsOpen] = useState(false);
 
   const forceClose = () => setDropIsOpen(false);
@@ -32,7 +31,8 @@ const Nav = ({ characters, time, gameData }) => {
 
   const handleTestGameData = () => console.log(gameData);
 
-  const handleFSTest = async () => makeCopy(gameData.userIdDocref);
+  const handleTest = () => console.log(highscores);
+
   return (
     <div id='nav-container'>
       <div id='nav-title'>
@@ -40,7 +40,7 @@ const Nav = ({ characters, time, gameData }) => {
         <p id='nav-us'>Us</p>
       </div>
       <button onClick={handleTestGameData}>local</button>
-      <button onClick={handleFSTest}>db</button>
+      <button onClick={handleTest}>test</button>
       <Time time={time} />
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>
