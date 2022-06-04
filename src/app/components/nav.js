@@ -44,9 +44,7 @@ const Nav = ({ characters, time, gameData, highscores }) => {
       <Time time={time} />
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>
-          <span className='dropbtn-tooltip-text'>
-            Click me for character info!
-          </span>
+          <span className='dropbtn-tooltip-text'>click here</span>
           {
             Object.values(characters).filter((char) => char.found === false)
               .length
