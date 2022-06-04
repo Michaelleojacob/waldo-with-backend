@@ -23,7 +23,7 @@
 #nav-title:hover .tooltip-text {
   visibility: visible;
 }
-#dropdown-container:hover .tooltip-text {
+#dropbtn:hover .tooltip-text {
   visibility: visible;
 }
 
