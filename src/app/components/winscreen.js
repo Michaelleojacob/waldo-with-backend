@@ -3,6 +3,25 @@ import {
   pushToHighscores,
 } from '../firebase-utils/firestore';
 
+const secondsToMinutes = (time) => {
+  const seconds = Number(time);
+  const format = (val) => `0${Math.floor(val)}`.slice(-2);
+  const formatHours = (val) => `${Math.floor(val)}`.slice(-2);
+  const hours = seconds / 3600;
+  const minutes = (seconds % 3600) / 60;
+
+  //only seconds
+  if (hours < 1 && minutes < 1)
+    return [minutes, seconds % 60].map(format).join(':');
+
+  //format minutes
+  if (hours < 1 && minutes >= 1)
+    return [minutes, seconds % 60].map(format).join(':');
+
+  //includes hours lol
+  return [hours, minutes, seconds % 60].map(formatHours).join(':');
+};
+
 const WinScreen = ({
   resetGame,
   tempUserDocRef,
@@ -47,7 +66,7 @@ const WinScreen = ({
         <div id='speed'>
           <div>final time:</div>
           <div id='completion-time'>
-            {time === null ? 'loading...' : time.toFixed(2)}
+            {time === null ? 'loading...' : secondsToMinutes(time)}
           </div>
         </div>
         {userMadeHighscores ? (
@@ -99,7 +118,7 @@ const EachScore = ({ obj, index, tempUserDocRef }) => {
     <div className={obj.id === tempUserDocRef ? 'userScore' : 'score'}>
       <div>{index + 1}.</div>
       <div>{obj.name}</div>
-      <div>{Number(obj.time).toFixed(2)}</div>
+      <div>{secondsToMinutes(obj.time)}</div>
     </div>
   );
 };
