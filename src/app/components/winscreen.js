@@ -26,6 +26,9 @@ const WinScreen = ({
     return;
   };
 
+  const checkSeconds = (num) =>
+    num > 60 ? console.log('we should operate') : console.log(num);
+
   const getUserIndex = (arr, id) => arr.filter((item) => item.id === id);
 
   const updateFieldChange = (id) => (e) => {

@@ -16,14 +16,18 @@
   cursor: pointer;
 }
 
+#dropbtn {
+  cursor: pointer;
+}
+
 #nav-title {
   display: flex;
   cursor: pointer;
 }
-#nav-title:hover .tooltip-text {
+#nav-title:hover .title-tooltip-text {
   visibility: visible;
 }
-#dropbtn:hover .tooltip-text {
+#dropbtn:hover .dropbtn-tooltip-text {
   visibility: visible;
 }
 
@@ -35,14 +39,25 @@
   color: red;
 }
 
-.tooltip-text {
+.title-tooltip-text {
   position: absolute;
   visibility: hidden;
   top: 100%;
-  left: 5%;
   background: black;
   padding: 0.5rem;
   width: fit-content;
   border-radius: 8px;
   border: 1px transparent solid;
+}
+.dropbtn-tooltip-text {
+  position: absolute;
+  visibility: hidden;
+  top: 100%;
+  left: -100%;
+  background: black;
+  padding: 0.5rem;
+  width: fit-content;
+  border-radius: 8px;
+  border: 1px transparent solid;
+  font-size: 1rem;
 }

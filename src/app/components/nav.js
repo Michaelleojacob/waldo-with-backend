@@ -39,12 +39,14 @@ const Nav = ({ characters, time, gameData, highscores }) => {
       <div id='nav-title' onClick={handleClickTitle}>
         <p id='nav-find'>Find</p>
         <p id='nav-us'>Us</p>
-        <span className='tooltip-text'>michaelleojacob github</span>
+        <span className='title-tooltip-text'>michaelleojacob github</span>
       </div>
       <Time time={time} />
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>
-          <span className='tooltip-text'>Click me for character info!</span>
+          <span className='dropbtn-tooltip-text'>
+            Click me for character info!
+          </span>
           {
             Object.values(characters).filter((char) => char.found === false)
               .length
