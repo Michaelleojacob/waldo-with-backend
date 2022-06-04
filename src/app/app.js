@@ -133,6 +133,7 @@ const App = () => {
   };
 
   const resetGame = async () => {
+    //user made highscores then reset
     if (userMadeHighscores && allowSubmit) {
       setAllowSubmit(false);
       const checkIfNameIsEmpty =
@@ -140,6 +141,7 @@ const App = () => {
       await updateTempUserName(tempUserDocRef, checkIfNameIsEmpty);
       await pushToHighscores(tempUserDocRef);
     }
+    // just reset [all variables/states to initial state]
     setIsGameLive(false);
     setWin(false);
     setGameData({});
