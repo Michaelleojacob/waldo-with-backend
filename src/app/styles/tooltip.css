@@ -1,0 +1,39 @@
+#tooltip-container {
+  position: fixed;
+  width: 100vw;
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+#tooltip-container > * {
+  margin: 0.2rem;
+}
+
+.hide-tt {
+  visibility: hidden;
+}
+.hide-tt > * {
+  visibility: hidden;
+}
+
+.display-tt {
+  visibility: visible;
+}
+.display-tt > * {
+  visibility: visible;
+}
+
+.danger {
+  background-color: red;
+  padding: 0.5rem;
+  width: fit-content;
+  border-radius: 8px;
+}
+.success {
+  background-color: green;
+  padding: 0.5rem;
+  width: fit-content;
+  border-radius: 8px;
+}

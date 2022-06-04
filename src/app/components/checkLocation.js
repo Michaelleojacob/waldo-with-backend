@@ -11,6 +11,7 @@ const CheckLocation = ({
   imageDimensions,
   naturalDimensions,
   forceClickInactive,
+  keepLookingTT,
 }) => {
   //dimensions and click values
   const { xClickCoord, yClickCoord } = clickCoords;
@@ -36,10 +37,11 @@ const CheckLocation = ({
       imageDimensions,
     };
     const result = compareXYClickWithXYCharacter(obj);
-    if (result) {
-      changeCharacterFound(charNum);
-    }
+    // if (result) {
+    //   changeCharacterFound(charNum);
+    // }
     forceClickInactive();
+    return result ? changeCharacterFound(charNum) : keepLookingTT();
   };
 
   return (

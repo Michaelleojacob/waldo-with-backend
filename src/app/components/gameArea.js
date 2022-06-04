@@ -1,7 +1,7 @@
 import CheckLocation from './checkLocation';
 import { useState } from 'react';
 
-const GameArea = ({ gameData, changeCharacterFound }) => {
+const GameArea = ({ gameData, changeCharacterFound, keepLookingTT }) => {
   const [clickActive, setClickActive] = useState(false);
   const [clickCoords, setClickCoords] = useState({});
   const [imageDimensions, setImageDimensions] = useState({});
@@ -36,6 +36,7 @@ const GameArea = ({ gameData, changeCharacterFound }) => {
           naturalDimensions={naturalDimensions}
           changeCharacterFound={changeCharacterFound}
           userIdDocref={gameData.userIdDocref}
+          keepLookingTT={keepLookingTT}
         />
       ) : null}
       <img

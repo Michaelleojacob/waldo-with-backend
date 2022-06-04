@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import GameArea from './components/gameArea';
 import WinScreen from './components/winscreen';
 import getCorrectCharacters from './utils/staticGameData';
+import Tooltip from './components/tooltip';
 import {
   createNewUser,
   createMaps,
@@ -41,6 +42,8 @@ const App = () => {
   const [time, setTime] = useState(null);
   const [userMadeHighscores, setUserMadeHighscores] = useState(false);
   const [allowSubmit, setAllowSubmit] = useState(false);
+  const [tooltip, setTooltip] = useState({ text: '', status: '' });
+  const [ttTimer, setTTTimer] = useState(null);
 
   const addStaticValuesToGameData = (num) => {
     const userInfoObj = createNewUser();
@@ -93,6 +96,19 @@ const App = () => {
     setHighscores(sortedArr);
   };
 
+  const updateTooltip = (text, status) => {
+    clearTimeout(ttTimer);
+    setTTTimer(null);
+    setTooltip({ text, status });
+    setTTTimer(
+      setTimeout(() => {
+        setTooltip({ text: '', status: '' });
+      }, 2000)
+    );
+  };
+
+  const keepLookingTT = () => updateTooltip('keep looking!', false);
+
   const changeCharacterFound = async (characterNum) => {
     setGameData((prevState) => ({
       ...prevState,
@@ -104,6 +120,7 @@ const App = () => {
         },
       },
     }));
+    updateTooltip(`${gameData.characters[characterNum].name} found!`, 'true');
     await updatedbCharFound(tempUserDocRef, characterNum);
     await checkDbForWin();
   };
@@ -221,13 +238,19 @@ const App = () => {
       ) : null}
       {isGameLive && !win ? (
         <div>
-          <Nav characters={gameData.characters} time={gameData.time} />
+          <Nav
+            characters={gameData.characters}
+            time={gameData.time}
+            gameData={gameData}
+          />
+          <Tooltip tooltip={tooltip} setTooltip={setTooltip} />
           <GameArea
             gameData={gameData}
             changeCharacterFound={changeCharacterFound}
             createStartTimeStamp={setStartTimestamp}
             checkForWin={checkForWin}
             maps={maps}
+            keepLookingTT={keepLookingTT}
           />
         </div>
       ) : null}

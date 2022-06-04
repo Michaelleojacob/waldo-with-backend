@@ -20,7 +20,7 @@ const Time = ({ time }) => {
   );
 };
 
-const Nav = ({ characters, time, gameData, highscores }) => {
+const Nav = ({ characters, time, gameData }) => {
   const [dropIsOpen, setDropIsOpen] = useState(false);
 
   const forceClose = () => setDropIsOpen(false);
@@ -34,6 +34,8 @@ const Nav = ({ characters, time, gameData, highscores }) => {
       .open('https://github.com/Michaelleojacob/waldo-with-backend', '_blank')
       .focus();
 
+  const handleData = () => console.log(gameData);
+
   return (
     <div id='nav-container'>
       <div id='nav-title' onClick={handleClickTitle}>
@@ -41,6 +43,7 @@ const Nav = ({ characters, time, gameData, highscores }) => {
         <p id='nav-us'>Us</p>
         <span className='title-tooltip-text'>michaelleojacob github</span>
       </div>
+      <button onClick={handleData}>data</button>
       <Time time={time} />
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>
