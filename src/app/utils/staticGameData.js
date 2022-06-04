@@ -1,6 +1,6 @@
 export const createNewUser = () => {
   const userData = {
-    name: 'anon',
+    name: '',
     timestamps: {
       start: null,
       end: null,

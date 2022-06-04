@@ -35,11 +35,12 @@ const WinScreen = ({
   setAllowSubmit,
 }) => {
   const handleSubmit = async (e) => {
+    const checkIfNameIsEmpty = name.trim() === '' ? 'anon' : name;
     e.preventDefault();
     if (!allowSubmit || !userMadeHighscores) return;
     if (allowSubmit && userMadeHighscores) {
       setAllowSubmit(false);
-      await updateTempUserName(tempUserDocRef, name);
+      await updateTempUserName(tempUserDocRef, checkIfNameIsEmpty);
       await pushToHighscores(tempUserDocRef);
     }
     return;
@@ -89,7 +90,12 @@ const WinScreen = ({
             </fieldset>
           </form>
         ) : null}
-        <button onClick={resetGame}>play again?</button>
+        <button id='resetbtn' onClick={resetGame}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span> play again
+        </button>
         <HighScores highscores={highscores} tempUserDocRef={tempUserDocRef} />
       </div>
     </div>

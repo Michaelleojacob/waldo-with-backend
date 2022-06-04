@@ -141,7 +141,9 @@ const App = () => {
   const resetGame = async () => {
     if (userMadeHighscores && allowSubmit) {
       setAllowSubmit(false);
-      await updateTempUserName(tempUserDocRef, gameData.name);
+      const checkIfNameIsEmpty =
+        gameData.name.trim() === '' ? 'anon' : gameData.name;
+      await updateTempUserName(tempUserDocRef, checkIfNameIsEmpty);
       await pushToHighscores(tempUserDocRef);
     }
     setIsGameLive(false);
