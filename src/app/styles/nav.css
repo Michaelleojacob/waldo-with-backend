@@ -12,8 +12,19 @@
   font-size: 1.5rem;
 }
 
+.dropdown-container {
+  cursor: pointer;
+}
+
 #nav-title {
   display: flex;
+  cursor: pointer;
+}
+#nav-title:hover .tooltip-text {
+  visibility: visible;
+}
+#dropdown-container:hover .tooltip-text {
+  visibility: visible;
 }
 
 #nav-find {
@@ -22,4 +33,16 @@
 
 #nav-us {
   color: red;
+}
+
+.tooltip-text {
+  position: absolute;
+  visibility: hidden;
+  top: 100%;
+  left: 5%;
+  background: black;
+  padding: 0.5rem;
+  width: fit-content;
+  border-radius: 8px;
+  border: 1px transparent solid;
 }

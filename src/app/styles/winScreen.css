@@ -68,7 +68,7 @@
 
 .display-input {
   display: block;
-  visibility: initial;
+  visibility: visible;
 }
 
 .hide-input {

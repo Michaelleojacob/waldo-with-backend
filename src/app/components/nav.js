@@ -29,20 +29,21 @@ const Nav = ({ characters, time, gameData, highscores }) => {
 
   const handleDropdown = () => toggleIsOpen();
 
-  const handleTestGameData = () => console.log(gameData);
-
-  const handleTest = () => console.log(highscores);
+  const handleClickTitle = () =>
+    window
+      .open('https://github.com/Michaelleojacob/waldo-with-backend', '_blank')
+      .focus();
 
   return (
     <div id='nav-container'>
-      <div id='nav-title'>
+      <div id='nav-title' onClick={handleClickTitle}>
         <p id='nav-find'>Find</p>
         <p id='nav-us'>Us</p>
+        <span className='tooltip-text'>michaelleojacob github</span>
       </div>
-      <button onClick={handleTestGameData}>local</button>
-      <button onClick={handleTest}>test</button>
       <Time time={time} />
       <div id='dropdown-container'>
+        <span className='tooltip-text'>Click me for character info!</span>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>
           {
             Object.values(characters).filter((char) => char.found === false)

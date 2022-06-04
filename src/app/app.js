@@ -219,13 +219,7 @@ const App = () => {
       ) : null}
       {isGameLive && !win ? (
         <div>
-          <Nav
-            characters={gameData.characters}
-            time={gameData.time}
-            tempUserDocRef={tempUserDocRef}
-            gameData={gameData}
-            highscores={highscores}
-          />
+          <Nav characters={gameData.characters} time={gameData.time} />
           <GameArea
             gameData={gameData}
             changeCharacterFound={changeCharacterFound}
@@ -237,7 +231,6 @@ const App = () => {
       ) : null}
       {!isGameLive && win ? (
         <WinScreen
-          timestamps={gameData.timestamps}
           resetGame={resetGame}
           tempUserDocRef={tempUserDocRef}
           highscores={highscores}

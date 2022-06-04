@@ -38,6 +38,8 @@
   padding: 0.5rem;
   justify-content: space-evenly;
   align-items: flex-start;
+  min-width: 14rem;
+  max-width: 14rem;
 }
 
 #preview-chars {
