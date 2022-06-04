@@ -5,12 +5,7 @@ import GameArea from './components/gameArea';
 import WinScreen from './components/winscreen';
 import getCorrectCharacters from './utils/staticGameData';
 import Tooltip from './components/tooltip';
-import {
-  createNewUser,
-  createMaps,
-  staticCharOneInfo,
-  staticCharTwoInfo,
-} from './utils/staticGameData';
+import { createNewUser, createMaps } from './utils/staticGameData';
 import {
   checkdbIfAllCharsAreFound,
   createTempUser,
@@ -33,10 +28,6 @@ const App = () => {
   const [win, setWin] = useState(false);
   // eslint-disable-next-line
   const [maps, setMaps] = useState(createMaps());
-  // eslint-disable-next-line
-  const [gameOneInfo, setGameOneInfo] = useState(staticCharOneInfo());
-  // eslint-disable-next-line
-  const [gameTwoInfo, setGameTwoInfo] = useState(staticCharTwoInfo());
   const [tempUserDocRef, setTempUserDocRef] = useState();
   const [highscores, setHighscores] = useState([]);
   const [time, setTime] = useState(null);
@@ -59,6 +50,13 @@ const App = () => {
       ...prevState,
       characters: { ...charObj },
     }));
+  };
+
+  const checkForWin = () => {
+    const checkCharacters = Object.values(gameData.characters).every(
+      (char) => char.found
+    );
+    return checkCharacters;
   };
 
   const checkDbForWin = async () => {
@@ -148,13 +146,6 @@ const App = () => {
     setHighscores(await getHighscores(number));
   };
 
-  const updateUserName = (newName) => {
-    setGameData((prevState) => ({
-      ...prevState,
-      name: newName,
-    }));
-  };
-
   const resetGame = async () => {
     if (userMadeHighscores && allowSubmit) {
       setAllowSubmit(false);
@@ -171,6 +162,15 @@ const App = () => {
     setTime(null);
     setUserMadeHighscores(false);
     setAllowSubmit(false);
+    setTooltip({ text: '', status: '' });
+    setTTTimer(null);
+  };
+
+  const updateUserName = (newName) => {
+    setGameData((prevState) => ({
+      ...prevState,
+      name: newName,
+    }));
   };
 
   const incrementTime = () =>
@@ -188,13 +188,6 @@ const App = () => {
       },
     }));
 
-  const checkForWin = () => {
-    const checkCharacters = Object.values(gameData.characters).every(
-      (char) => char.found
-    );
-    return checkCharacters;
-  };
-
   const setEndTimestamp = () =>
     setGameData((prevState) => ({
       ...prevState,
@@ -204,13 +197,13 @@ const App = () => {
       },
     }));
 
-  // on first render
+  //on first render delete all old tempUsers
   useEffect(() => {
     const deleteOld = async () => await deleteAfter24Hours();
     deleteOld();
   }, []);
 
-  // timer
+  // incrementing timer in nav
   useEffect(() => {
     let intervalId;
     if (isGameLive) {
@@ -219,20 +212,11 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, [isGameLive]);
 
-  useEffect(() => {
-    if (gameData.hasOwnProperty('characters')) {
-    }
-
-    // eslint-disable-next-line
-  }, [gameData.characters]);
-
   return (
     <div id='app-container'>
       {!isGameLive && !win ? (
         <Modal
           startGameBasedOnSelectedValue={startGameBasedOnSelectedValue}
-          gameOneInfo={gameOneInfo}
-          gameTwoInfo={gameTwoInfo}
           maps={maps}
         />
       ) : null}

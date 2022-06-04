@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import Preview from './preview';
+import {
+  staticCharOneInfo,
+  staticCharTwoInfo,
+  createMaps,
+} from '../utils/staticGameData';
 
-const Modal = ({
-  startGameBasedOnSelectedValue,
-  gameOneInfo,
-  gameTwoInfo,
-  maps,
-}) => {
+const Modal = ({ startGameBasedOnSelectedValue }) => {
   const [selected, setSelected] = useState(1);
 
   const handleStart = () => {
@@ -45,9 +45,9 @@ const Modal = ({
         <Preview
           selected={selected}
           start={handleStart}
-          gameOneInfo={gameOneInfo}
-          gameTwoInfo={gameTwoInfo}
-          maps={maps}
+          gameOneInfo={staticCharOneInfo()}
+          gameTwoInfo={staticCharTwoInfo()}
+          maps={createMaps()}
         />
         <div id='artist-name'>artwork by Egor Klycuhnyk</div>
       </div>
