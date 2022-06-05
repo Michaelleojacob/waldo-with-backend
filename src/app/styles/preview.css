@@ -58,10 +58,10 @@
 }
 
 .preview-char-icon {
-  min-width: 6rem;
-  min-height: 6rem;
-  max-height: 6rem;
-  max-width: 6rem;
+  min-width: 5rem;
+  min-height: 5rem;
+  max-height: 5rem;
+  max-width: 5rem;
   border-radius: 8px;
 }
 

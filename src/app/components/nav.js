@@ -20,7 +20,7 @@ const Time = ({ time }) => {
   );
 };
 
-const Nav = ({ characters, time }) => {
+const Nav = ({ characters, time, resetGame }) => {
   const [dropIsOpen, setDropIsOpen] = useState(false);
 
   const forceClose = () => setDropIsOpen(false);
@@ -29,17 +29,14 @@ const Nav = ({ characters, time }) => {
 
   const handleDropdown = () => toggleIsOpen();
 
-  const handleClickTitle = () =>
-    window
-      .open('https://github.com/Michaelleojacob/waldo-with-backend', '_blank')
-      .focus();
+  const handleReset = () => resetGame();
 
   return (
     <div id='nav-container'>
-      <div id='nav-title' onClick={handleClickTitle}>
+      <div id='nav-title' onClick={handleReset}>
         <p id='nav-find'>Find</p>
         <p id='nav-us'>Us</p>
-        <span className='title-tooltip-text'>michaelleojacob github</span>
+        <span className='title-tooltip-text'>reset game</span>
       </div>
       <Time time={time} />
       <div id='dropdown-container'>

@@ -210,7 +210,11 @@ const App = () => {
       ) : null}
       {isGameLive && !win ? (
         <div>
-          <Nav characters={gameData.characters} time={gameData.time} />
+          <Nav
+            characters={gameData.characters}
+            time={gameData.time}
+            resetGame={resetGame}
+          />
           <Tooltip tooltip={tooltip} setTooltip={setTooltip} />
           <GameArea
             gameData={gameData}
