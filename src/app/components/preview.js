@@ -13,12 +13,12 @@ const EachChar = ({ char }) => {
   );
 };
 
-const PreviewContent = ({ chars, map, start }) => {
+const PreviewContent = ({ chars, map, start, selected }) => {
   return (
     <div id='preview-content'>
       <div id='preview-img-container'>
         <img
-          id='preview-img'
+          className={selected === 1 ? 'preview-img-1' : 'preview-img-2'}
           src={process.env.PUBLIC_URL + map}
           alt='img1'></img>
       </div>
@@ -40,9 +40,19 @@ const Preview = ({ selected, start, gameOneInfo, gameTwoInfo, maps }) => {
   return (
     <div id='prev-wrapper'>
       {selected === 1 ? (
-        <PreviewContent start={start} chars={gameOneInfo} map={maps.one} />
+        <PreviewContent
+          start={start}
+          chars={gameOneInfo}
+          map={maps.one}
+          selected={selected}
+        />
       ) : (
-        <PreviewContent start={start} chars={gameTwoInfo} map={maps.two} />
+        <PreviewContent
+          start={start}
+          chars={gameTwoInfo}
+          map={maps.two}
+          selected={selected}
+        />
       )}
     </div>
   );

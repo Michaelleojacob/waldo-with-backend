@@ -24,11 +24,23 @@
   overflow: hidden;
 }
 
-#preview-img {
-  max-height: 100%;
+.preview-img-1 {
+  /* max-height: 100%;
   height: 100%;
   width: 55vw;
   min-width: 10rem;
+  max-width: 10rem; */
+  max-height: 100%;
+  height: 100%;
+}
+
+.preview-img-2 {
+  /* max-height: 100%;
+  height: 100%;
+  width: auto;
+  max-width: 10rem; */
+  max-height: 100%;
+  height: 100%;
   max-width: 10rem;
 }
 

@@ -1,6 +1,6 @@
 #nav-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   position: fixed;
   top: 0;
   width: 100%;
@@ -24,7 +24,13 @@
 #nav-title {
   display: flex;
   cursor: pointer;
+  min-width: 100px;
+  justify-content: center;
 }
+#nav-title:hover {
+  font-size: 1.8rem;
+}
+
 #nav-title:hover .title-tooltip-text {
   visibility: visible;
 }
