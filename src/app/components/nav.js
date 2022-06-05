@@ -42,10 +42,12 @@ const Nav = ({ characters, time, resetGame }) => {
       <div id='dropdown-container'>
         <button id='dropbtn' onClick={handleDropdown} onBlur={forceClose}>
           <span className='dropbtn-tooltip-text'>click here</span>
-          {
-            Object.values(characters).filter((char) => char.found === false)
-              .length
-          }
+          <span className='dropbtn-num'>
+            {
+              Object.values(characters).filter((char) => char.found === false)
+                .length
+            }
+          </span>
         </button>
 
         {dropIsOpen ? <NavDropdown characters={characters} /> : null}

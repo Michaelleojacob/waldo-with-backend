@@ -46,6 +46,10 @@
   color: red;
 }
 
+#dropbtn:hover .dropbtn-num {
+  font-size: 1.8rem;
+}
+
 .title-tooltip-text {
   position: absolute;
   visibility: hidden;
