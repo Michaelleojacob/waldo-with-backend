@@ -1,5 +1,7 @@
 #prev-wrapper {
   overflow: hidden;
+  min-width: 400px;
+  max-width: 50%;
 }
 
 #preview-content {
