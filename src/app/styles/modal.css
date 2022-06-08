@@ -1,9 +1,3 @@
-/* #init-modal-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */
-
 #init-modal-container {
   display: block;
   position: fixed;
