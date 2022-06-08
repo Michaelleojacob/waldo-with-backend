@@ -76,103 +76,33 @@
   visibility: hidden;
 }
 
-/* From uiverse.io by @menezes11 */
 #resetbtn {
-  position: relative;
-  padding: 1em 1.8em;
-  outline: none;
-  border: 1px solid #303030;
-  background: #212121;
-  color: #ae00ff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 15px;
-  overflow: hidden;
-  transition: 0.2s;
-  border-radius: 20px;
+  background: linear-gradient(93deg, #2a2c80, #fd1d1d 50%, #fcb045);
+  transition: transform 0.3s ease;
+  border: 0;
+  border-radius: 12px;
+  color: #ffffff;
   cursor: pointer;
-  font-weight: bold;
-  margin: 1rem;
+  display: inline-block;
+  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 3rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
 }
 
 #resetbtn:hover {
-  box-shadow: 0 0 10px #ae00ff, 0 0 25px #001eff, 0 0 50px #ae00ff;
-  transition-delay: 0.6s;
+  opacity: 75%;
 }
-
-#resetbtn span {
-  position: absolute;
-}
-
-#resetbtn span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #ae00ff);
-}
-
-#resetbtn:hover span:nth-child(1) {
-  left: 100%;
-  transition: 0.7s;
-}
-
-#resetbtn span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #001eff);
-}
-
-#resetbtn:hover span:nth-child(3) {
-  right: 100%;
-  transition: 0.7s;
-  transition-delay: 0.35s;
-}
-
-#resetbtn span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, #ae00ff);
-}
-
-#resetbtn:hover span:nth-child(2) {
-  top: 100%;
-  transition: 0.7s;
-  transition-delay: 0.17s;
-}
-
-#resetbtn span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, #001eff);
-}
-
-#resetbtn:hover span:nth-child(4) {
-  bottom: 100%;
-  transition: 0.7s;
-  transition-delay: 0.52s;
-}
-
 #resetbtn:active {
-  background: #ae00af;
-  background: linear-gradient(to top right, #ae00af, #001eff);
-  color: #bfbfbf;
-  box-shadow: 0 0 8px #ae00ff, 0 0 8px #001eff, 0 0 8px #ae00ff;
-  transition: 0.1s;
+  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
 }
-
-#resetbtn:active
-  span:nth-child(1)
-  span:nth-child(2)
-  span:nth-child(2)
-  span:nth-child(2) {
-  transition: none;
-  transition-delay: none;
-}
-/* end #resetbtn css */
