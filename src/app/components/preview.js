@@ -18,7 +18,8 @@ const PreviewContent = ({ chars, map, start, selected }) => {
     <div id='preview-content'>
       <div id='preview-img-container'>
         <img
-          className={selected === 1 ? 'preview-img-1' : 'preview-img-2'}
+          // className={selected === 1 ? 'preview-img-1' : 'preview-img-2'}
+          className='prev-img'
           src={process.env.PUBLIC_URL + map}
           alt='img1'></img>
       </div>
