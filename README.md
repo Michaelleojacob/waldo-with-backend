@@ -1,4 +1,4 @@
-# Todo List App by Michael Jacob<br><a href="https://michaelleojacob-photo-tagging-app.web.app/" target="_blank">Repository</a> <br><a href="https://github.com/Michaelleojacob/waldo-with-backend" target="_blank">Live application</a>
+# Todo List App by Michael Jacob<br><a href="https://github.com/Michaelleojacob/waldo-with-backend" target="_blank">Repository</a> <br><a href="https://michaelleojacob-photo-tagging-app.web.app/" target="_blank">Live application</a>
 
 # How to use:<br>Click on the >Live application< above. Select one of the two maps present and then hit `start`<br>Once in game, look for the characters from the landing page.<br>If you forget who you are looking for you can <br>Projects can also be created by clicking the `3/2/1` button at the top right on the nav.<br>Characters will be updated in firestore and relay that info back to the screen. The game will end once you have found 3/3 characters as per that map.
 
